@@ -7,22 +7,20 @@
     <script src="skepp.js" defer></script>
     <script src="knapp.js" defer></script>
     <h1>Sänkaskepp 🚢</h1>
-    <button onclick="toggleMode(this)">Klassiskt Mode</button>
+    <button onclick="toggleMode(this)">Klassiskt Läge</button>
     <button onclick="darkmode()">Dark Mode</button>
+    <p>Spelläge: <span id="modeDisplay">Klassiskt Läge</span> </p>
+    <p>Träff=💥</p>
+    <p>Miss=❌</p>
+    <p>Båt=🚢</p>
 
 </head>
 <body>
-    <p>Spelläge: <span id="modeDisplay">Klassiskt Mode</span> </p>
-
     <section id="spelplan">
         <canvas id="minCanvas" width="400" height="400" style="border:1px solid #000;"></canvas>
 
         <canvas id="fiendeCanvas" width="400" height="400" style="border:1px solid #000;"></canvas>  
     </section>
- 
-    <p>Träff=💥</p>
-    <p>Miss=❌</p>
-    <p>Båt=🚢</p>
 
 
 <button id="generateBtn">Generera Koordinater</button>
