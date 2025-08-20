@@ -5,9 +5,18 @@ body{
     text-align: center;
     margin: auto;
 }    
-button{
+body.darkmode {
+  background-color: rgb(88, 81, 81);
+  color: white ;
+}
+  button{
     margin: 10px;
     padding: 10px;
     font-size: 15px;
     
+}
+
+p{
+    font-size: 20px;
+    font-weight: bold;
 }
