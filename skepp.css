@@ -22,6 +22,22 @@ body.darkmode {
   background-color: rgb(0, 0, 0);
   color: white ;
 }
+
+section {
+  background: none;
+  color: #222;
+}
+section.darkmode {
+  background: none;
+  color: #222;
+}
+canvas {
+  background-color: seashell;
+}
+body.darkmode canvas {
+  background-color: seashell;
+}
+
 button{
   margin: 10px;
   padding: 10px;
