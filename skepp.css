@@ -1,6 +1,9 @@
 h1{
+  font-size: 50px;
   text-align: center;
   margin: 5px;
+  padding: 5px;
+
 }
 h2{
   font-size: 14px;
@@ -35,11 +38,11 @@ canvas {
   background-color: seashell;
 }
 body.darkmode canvas {
-  background-color: seashell;
+  background-color:darkgrey;
 }
 
 button{
-  margin: 10px;
+  margin: 5px;
   padding: 10px;
   font-size: 15px;
   border: 2px solid black;
@@ -51,12 +54,13 @@ button{
 
   button:hover {
     background-color: darkgoldenrod;
-    color: #fff;
+    color: #ffffff;
   }
 
 
 canvas {
-  margin: 20px;
+  margin: 25px;
+  border-radius: 10px;
 }
 
 p{
