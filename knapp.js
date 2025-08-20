@@ -1,13 +1,13 @@
 function toggleMode(button) {
     const modeDisplay = document.getElementById("modeDisplay");
-    if (button.textContent === "Normal Mode") {
-        button.textContent = "Russian Mode";
-        modeDisplay.textContent = "Russian Mode";
-        console.log("Switched to Russian Mode");
+    if (button.textContent === "Klassisk Läge") {
+        button.textContent = "Ryskt Läge";
+        modeDisplay.textContent = "Ryskt läge";
+        console.log("Bytte till Ryskt Läge");
     } else {
-        button.textContent = "Normal Mode";
-        modeDisplay.textContent = "Normal Mode";
-        console.log("Switched to Normal Mode");
+        button.textContent = "Klassiskt Läge";
+        modeDisplay.textContent = "Klassiskt Läge";
+        console.log("Bytte till Klassiskt Läge");
     }
 }
 
