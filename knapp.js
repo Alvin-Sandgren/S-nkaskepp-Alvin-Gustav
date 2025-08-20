@@ -10,3 +10,10 @@ function toggleMode(button) {
         console.log("Switched to Normal Mode");
     }
 }
+
+// dark mode
+function darkmode() {
+    var element = document.body;
+    element.classList.toggle("darkmode");
+    
+  } 
