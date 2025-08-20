@@ -1,7 +1,9 @@
 h1{
   text-align: center;
+  margin: 5px;
 }
 body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   margin: auto;
   background-color: floralwhite;
@@ -28,4 +30,5 @@ canvas {
 p{
   font-size: 17.5px;
   font-weight: bold;
+  margin: 5px;
 }
