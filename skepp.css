@@ -22,7 +22,7 @@ body.darkmode {
   background-color: rgb(0, 0, 0);
   color: white ;
 }
-  button{
+button{
   margin: 10px;
   padding: 10px;
   font-size: 15px;
@@ -50,6 +50,6 @@ footer h3 {
 }
 
 @keyframes sail {
-  0% { transform: translateX(1000px); }
-  100% { transform: translateX(-1000px); }
+  0% { transform: translateX(1100px); }
+  100% { transform: translateX(-1100px); }
 }
