@@ -25,5 +25,10 @@ function drawGrid(){
     ctx.strokeStyle = "black"; // Set the color of the grid lines
     ctx.stroke(); // Draw the lines
 }
-
+// dark mode
+function darkmode() {
+  var element = document.body;
+  element.classList.toggle("darkmode");
+  
+} 
 drawGrid();
