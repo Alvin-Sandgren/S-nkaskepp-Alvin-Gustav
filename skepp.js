@@ -81,12 +81,6 @@ fiendeCanvas.addEventListener('click', e => {
     redrawFiendeCanvas(cellPos);
 });
 
-document.getElementById('generateBtn').addEventListener('click', () => {
-    const letters = 'ABCDEFGHIJ';
-    document.getElementById('coordinate').textContent =
-        letters[Math.floor(Math.random() * 10)] + (Math.floor(Math.random() * 10) + 1);
-});
-
 document.getElementById('resetBtn').addEventListener('click', function() {
     clickedCells.length = 0; // Töm arrayen
     generateShips();          // Generera nya skepp
