@@ -26,3 +26,14 @@ function drawGrid(){
     ctx.stroke(); // Draw the lines
 }
 drawGrid();
+
+function getRandomCoordinate() {
+    const letters = 'ABCDEFGHIJ';
+    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+    const randomNumber = Math.floor(Math.random() * 10) + 1;
+    return `${randomLetter}${randomNumber}`;
+}
+
+document.getElementById('generateBtn').addEventListener('click', function() {
+    document.getElementById('coordinate').textContent = getRandomCoordinate();
+});
