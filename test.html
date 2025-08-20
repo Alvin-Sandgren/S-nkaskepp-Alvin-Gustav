@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Coordinate Generator</title>
+</head>
+<body>
+    <button id="generateBtn">Generate Coordinate</button>
+    <p id="coordinate"></p>
+
+<script>
+    function getRandomCoordinate() {
+        const letters = 'ABCDEFGHIJ';
+        const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        return `${randomLetter}${randomNumber}`;
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', function() {
+        document.getElementById('coordinate').textContent = getRandomCoordinate();
+    });
+</script>
+</body>
+</html>
