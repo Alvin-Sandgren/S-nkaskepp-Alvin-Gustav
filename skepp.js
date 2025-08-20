@@ -62,3 +62,9 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     document.getElementById('coordinate').textContent =
         letters[Math.floor(Math.random() * 10)] + (Math.floor(Math.random() * 10) + 1);
 });
+
+document.getElementById('resetBtn').addEventListener('click', function() {
+    clickedCells.length = 0; // Töm arrayen
+    redrawFiendeCanvas();    // Rita om canvasen utan X
+});
+
