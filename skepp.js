@@ -1,11 +1,12 @@
 function toggleMode(button) {
+    const modeDisplay = document.getElementById("modeDisplay");
     if (button.textContent === "Normal Mode") {
         button.textContent = "Russian Mode";
-        // Add logic for Russian Mode here
+        modeDisplay.textContent = "Russian Mode";
         console.log("Switched to Russian Mode");
     } else {
         button.textContent = "Normal Mode";
-        // Add logic for Normal Mode here
+        modeDisplay.textContent = "Normal Mode";
         console.log("Switched to Normal Mode");
     }
 }
