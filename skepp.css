@@ -15,6 +15,9 @@ body.darkmode {
     font-size: 15px;
     
 }
+canvas {
+  margin: 20px;
+}
 
 p{
     font-size: 20px;
