@@ -39,3 +39,17 @@ p{
   font-weight: bold;
   margin: 5px;
 }
+
+footer {
+  margin-top: 10px;
+  font-size: 30px;
+}
+footer h3 {
+  display: inline-block;
+  animation: sail 5s linear infinite;
+}
+
+@keyframes sail {
+  0% { transform: translateX(1000px); }
+  100% { transform: translateX(-1000px); }
+}
