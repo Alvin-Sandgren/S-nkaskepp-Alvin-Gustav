@@ -4,7 +4,8 @@ const ctx = canvas.getContext("2d");
 const fiendeCtx = fiendeCanvas.getContext("2d");
 const gridSize = 10, size = 400, cell = size / gridSize;
 const clickedCells = [];
-const shipCells = []; // Här lagras skeppens positioner
+const shipCells = []; 
+const computerMoves = []; // <-- NY: datorns drag sparas här
 
 // Generera 5 slumpmässiga skepp
 function generateShips(count = 5) {
@@ -35,7 +36,6 @@ function drawAllX(ctx, cells) {
     ctx.strokeStyle = "black"; ctx.lineWidth = 3;
     const pad = cell * 0.2;
     cells.forEach(([c, r]) => {
-        // Om det är en skeppsposition, rita explosion istället för X
         if (shipCells.some(([sc, sr]) => sc === c && sr === r)) {
             ctx.font = `${cell * 0.8}px serif`;
             ctx.textAlign = "center";
@@ -62,6 +62,24 @@ function redrawFiendeCanvas(hover) {
         fiendeCtx.fillRect(hover[0] * cell, hover[1] * cell, cell, cell);
 }
 
+function redrawPlayerCanvas() {
+    ctx.clearRect(0, 0, size, size);
+    drawGrid(ctx);
+
+    // Rita skepp
+    shipCells.forEach(([c, r]) => {
+        ctx.save();
+        ctx.fillStyle = "blue";
+        ctx.beginPath();
+        ctx.arc(c * cell + cell / 2, r * cell + cell / 2, cell * 0.3, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+    });
+
+    // Rita datorns drag (💥 eller X)
+    drawAllX(ctx, computerMoves);
+}
+
 drawGrid(ctx); drawGrid(fiendeCtx);
 
 function getCell(e) {
@@ -79,59 +97,25 @@ fiendeCanvas.addEventListener('click', e => {
     if (!clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1]))
         clickedCells.push(cellPos);
     redrawFiendeCanvas(cellPos);
-});
 
-document.getElementById('resetBtn').addEventListener('click', function() {
-    clickedCells.length = 0; // Töm arrayen
-    generateShips();          // Generera nya skepp
-    redrawFiendeCanvas();     // Rita om canvasen utan X
-});
-
-fiendeCanvas.addEventListener('click', e => {
-    const cellPos = getCell(e);
-    if (!clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1]))
-        clickedCells.push(cellPos);
-    redrawFiendeCanvas(cellPos);
-
-    // Rita 5 skepp på din egen canvas (om inte redan finns)
-    ctx.clearRect(0, 0, size, size);
-    drawGrid(ctx);
-    // Rita skepp som blåa cirklar
-    shipCells.forEach(([c, r]) => {
-        ctx.save();
-        ctx.fillStyle = "blue";
-        ctx.beginPath();
-        ctx.arc(c * cell + cell / 2, r * cell + cell / 2, cell * 0.3, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.restore();
-    });
-
-    // Slumpmässigt X på din egen ruta
+    // DATORNS DRAG
     let randCell;
     do {
         randCell = [
             Math.floor(Math.random() * gridSize),
             Math.floor(Math.random() * gridSize)
         ];
-    } while (clickedCells.some(([c, r]) => c === randCell[0] && r === randCell[1]));
-    
-    // Rita explosion om träff, annars X på din egen canvas
-    ctx.save();
-    if (shipCells.some(([sc, sr]) => sc === randCell[0] && sr === randCell[1])) {
-        ctx.font = `${cell * 0.8}px serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText("💥", randCell[0] * cell + cell / 2, randCell[1] * cell + cell / 2);
-    } else {
-        ctx.strokeStyle = "black"; ctx.lineWidth = 3;
-        const pad = cell * 0.2;
-        ctx.beginPath();
-        ctx.moveTo(randCell[0] * cell + pad, randCell[1] * cell + pad);
-        ctx.lineTo((randCell[0] + 1) * cell - pad, (randCell[1] + 1) * cell - pad);
-        ctx.moveTo((randCell[0] + 1) * cell - pad, randCell[1] * cell + pad);
-        ctx.lineTo(randCell[0] * cell + pad, (randCell[1] + 1) * cell - pad);
-        ctx.stroke();
-    }
-    ctx.restore();
-    
+    } while (computerMoves.some(([c, r]) => c === randCell[0] && r === randCell[1]));
+
+    computerMoves.push(randCell); // <-- spara datorns drag
+
+    redrawPlayerCanvas(); // <-- Rita om hela min canvas
+});
+
+document.getElementById('resetBtn').addEventListener('click', function() {
+    clickedCells.length = 0;
+    computerMoves.length = 0; // <-- Töm datorns drag
+    generateShips();
+    redrawFiendeCanvas();
+    redrawPlayerCanvas();
 });
