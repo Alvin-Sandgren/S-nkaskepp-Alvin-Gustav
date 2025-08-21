@@ -6,11 +6,14 @@
     <title>Boooooom🚢🚢</title> <link rel="stylesheet" href="skepp.css">
     <script src="skepp.js" defer></script>
     <script src="knapp.js" defer></script>
+
     <h1>Sänka skepp</h1>
+
     <button onclick="toggleMode(this)">Klassiskt Läge</button>
     <button id="resetBtn">Börja om</button>
     <button onclick="darkmode()">Dark Mode</button>
-    <p>Spelläge: <span id="modeDisplay">Klassiskt Läge</span> </p>
+
+    <p>Spelläge: <span id="modeDisplay">Klassiskt Läge</span></p>
     <h2>Ryskt Läge innehåller fler skepp</h2>
     <p>Träff=💥</p>
     <p>Miss=❌</p>
