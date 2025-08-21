@@ -5,22 +5,29 @@ const fiendeCtx = fiendeCanvas.getContext("2d");
 const gridSize = 10, size = 400, cell = size / gridSize;
 const clickedCells = [];
 const shipCells = []; 
+const enemyShips = []; // <-- NYTT: fiendens skepp
 const computerMoves = [];
 
-// Genererar 5 slumpmässiga skepp
-function generateShips(count = 5) {
-    shipCells.length = 0;
-    while (shipCells.length < count) {
+// Genererar skepp på en bräda
+function generateShips(targetArray, count = 5, forbidden = []) {
+    targetArray.length = 0;
+    while (targetArray.length < count) {
         const pos = [
             Math.floor(Math.random() * gridSize),
             Math.floor(Math.random() * gridSize)
         ];
-        if (!shipCells.some(([c, r]) => c === pos[0] && r === pos[1])) {
-            shipCells.push(pos);
+        if (
+            !targetArray.some(([c, r]) => c === pos[0] && r === pos[1]) && // inte dubbelt
+            !forbidden.some(([c, r]) => c === pos[0] && r === pos[1])     // inte samma som förbjudna
+        ) {
+            targetArray.push(pos);
         }
     }
 }
-generateShips();
+
+// Skapa spelplan
+generateShips(shipCells);           // mina skepp
+generateShips(enemyShips, 5, shipCells); // fiendens skepp, EJ samma som mina
 
 function drawGrid(ctx) {
     ctx.beginPath();
@@ -31,12 +38,13 @@ function drawGrid(ctx) {
     ctx.strokeStyle = "black"; ctx.stroke();
 }
 
-function drawAllX(ctx, cells) {
+// Ritar X eller träffar
+function drawAllX(ctx, cells, ships) {
     ctx.save();
     ctx.strokeStyle = "black"; ctx.lineWidth = 3;
     const pad = cell * 0.2;
     cells.forEach(([c, r]) => {
-        if (shipCells.some(([sc, sr]) => sc === c && sr === r)) {
+        if (ships.some(([sc, sr]) => sc === c && sr === r)) {
             ctx.font = `${cell * 0.8}px serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -56,7 +64,7 @@ function drawAllX(ctx, cells) {
 function redrawFiendeCanvas(hover) {
     fiendeCtx.clearRect(0, 0, size, size);
     drawGrid(fiendeCtx);
-    drawAllX(fiendeCtx, clickedCells);
+    drawAllX(fiendeCtx, clickedCells, enemyShips); // <-- använder fiendens skepp
     if (hover)
         fiendeCtx.fillStyle = "rgba(0,0,255,0.2)",
         fiendeCtx.fillRect(hover[0] * cell, hover[1] * cell, cell, cell);
@@ -66,7 +74,7 @@ function redrawPlayerCanvas() {
     ctx.clearRect(0, 0, size, size);
     drawGrid(ctx);
 
-    // Rita skepp
+    // Rita mina skepp
     shipCells.forEach(([c, r]) => {
         ctx.save();
         ctx.fillStyle = "blue";
@@ -76,8 +84,8 @@ function redrawPlayerCanvas() {
         ctx.restore();
     });
 
-    // Ritar datorns drag (💥 eller X)
-    drawAllX(ctx, computerMoves);
+    // Ritar datorns drag på mina skepp
+    drawAllX(ctx, computerMoves, shipCells);
 }
 
 drawGrid(ctx); drawGrid(fiendeCtx);
@@ -107,15 +115,25 @@ fiendeCanvas.addEventListener('click', e => {
         ];
     } while (computerMoves.some(([c, r]) => c === randCell[0] && r === randCell[1]));
 
-    computerMoves.push(randCell); // <-- sparar datorns drag
+    computerMoves.push(randCell);
 
-    redrawPlayerCanvas(); // <-- Ritar om canvas
+    redrawPlayerCanvas();
 });
 
 document.getElementById('resetBtn').addEventListener('click', function() {
     clickedCells.length = 0;
-    computerMoves.length = 0; // <-- Tömmer datorns drag
-    generateShips();
+    computerMoves.length = 0;
+    generateShips(shipCells);
+    generateShips(enemyShips, 5, shipCells); // <-- NYTT: skapa nya fiendeskepp
+    redrawFiendeCanvas();
+    redrawPlayerCanvas();
+});
+
+document.getElementById('startBtn').addEventListener('click', function() {
+    clickedCells.length = 0;
+    computerMoves.length = 0;
+    generateShips(shipCells);
+    generateShips(enemyShips, 5, shipCells); // <-- NYTT: skapa nya fiendeskepp
     redrawFiendeCanvas();
     redrawPlayerCanvas();
 });
