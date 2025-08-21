@@ -14,7 +14,7 @@ h2{
 body{
   text-align: center;
   margin: auto;
-  background-color: seashell;
+  background-color: snow;
   color: #222;
   font-family: 'Segoe UI', Arial, sans-serif;
   min-height: 100vh;
@@ -38,7 +38,7 @@ canvas {
   background-color: rgb(255, 245, 238);
 }
 body.darkmode canvas {
-  background-color:darkgrey;
+  background-color: gainsboro;
 }
 
 button{
