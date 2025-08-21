@@ -38,7 +38,7 @@ canvas {
   background-color: seashell;
 }
 body.darkmode canvas {
-  background-color:darkgrey;
+  background-color: gainsboro;
 }
 
 button{
