@@ -36,9 +36,11 @@ section.darkmode {
 }
 canvas {
   background-color: rgb(255, 245, 238);
+  border: 3px solid goldenrod;
 }
 body.darkmode canvas {
   background-color: gainsboro;
+  border: 3px solid goldenrod;
 }
 
 button{
