@@ -1,5 +1,5 @@
 h1{
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
   margin: 5px;
   padding: 5px;
@@ -66,7 +66,7 @@ canvas {
 p{
   font-size: 20px;
   font-weight: bold;
-  margin: 5px;
+  margin: 2.5px;
 }
 
 footer {
