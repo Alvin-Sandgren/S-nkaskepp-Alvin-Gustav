@@ -82,9 +82,9 @@ fiendeCanvas.addEventListener('click', e => {
 });
 
 document.getElementById('resetBtn').addEventListener('click', function() {
-    clickedCells.length = 0; // Töm arrayen
-    generateShips();          // Generera nya skepp
-    redrawFiendeCanvas();     // Rita om canvasen utan X
+    clickedCells.length = 0; 
+    generateShips();          
+    redrawFiendeCanvas();     
 });
 
 fiendeCanvas.addEventListener('click', e => {

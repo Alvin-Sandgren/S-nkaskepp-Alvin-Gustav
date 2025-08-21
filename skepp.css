@@ -35,7 +35,7 @@ section.darkmode {
   color: #222;
 }
 canvas {
-  background-color: seashell;
+  background-color: rgb(255, 245, 238);
 }
 body.darkmode canvas {
   background-color:darkgrey;
