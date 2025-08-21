@@ -5,9 +5,9 @@ const fiendeCtx = fiendeCanvas.getContext("2d");
 const gridSize = 10, size = 400, cell = size / gridSize;
 const clickedCells = [];
 const shipCells = []; 
-const computerMoves = []; // <-- NY: datorns drag sparas här
+const computerMoves = [];
 
-// Generera 5 slumpmässiga skepp
+// Genererar 5 slumpmässiga skepp
 function generateShips(count = 5) {
     shipCells.length = 0;
     while (shipCells.length < count) {
@@ -76,7 +76,7 @@ function redrawPlayerCanvas() {
         ctx.restore();
     });
 
-    // Rita datorns drag (💥 eller X)
+    // Ritar datorns drag (💥 eller X)
     drawAllX(ctx, computerMoves);
 }
 
@@ -107,14 +107,14 @@ fiendeCanvas.addEventListener('click', e => {
         ];
     } while (computerMoves.some(([c, r]) => c === randCell[0] && r === randCell[1]));
 
-    computerMoves.push(randCell); // <-- spara datorns drag
+    computerMoves.push(randCell); // <-- sparar datorns drag
 
-    redrawPlayerCanvas(); // <-- Rita om hela min canvas
+    redrawPlayerCanvas(); // <-- Ritar om canvas
 });
 
 document.getElementById('resetBtn').addEventListener('click', function() {
     clickedCells.length = 0;
-    computerMoves.length = 0; // <-- Töm datorns drag
+    computerMoves.length = 0; // <-- Tömmer datorns drag
     generateShips();
     redrawFiendeCanvas();
     redrawPlayerCanvas();
