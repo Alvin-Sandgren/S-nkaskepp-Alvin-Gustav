@@ -1,33 +1,70 @@
+// ===============================
+//  Setup
+// ===============================
 const canvas = document.getElementById("minCanvas");
 const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
 const fiendeCtx = fiendeCanvas.getContext("2d");
-const gridSize = 10, size = 400, cell = size / gridSize;
-const clickedCells = [];
-const shipCells = []; 
-const enemyShips = []; // <-- NYTT: fiendens skepp
-const computerMoves = [];
 
-// Genererar skepp på en bräda
-function generateShips(targetArray, count = 5, forbidden = []) {
+const gridSize = 10, size = 400, cell = size / gridSize;
+
+const clickedCells = [];   // dina skott på fienden
+const shipCells = [];      // spelarens skepp
+const enemyShips = [];     // fiendens skepp
+const computerMoves = [];  // datorns drag
+
+let gameOver = false;
+
+// ===============================
+//  Hjälpfunktioner
+// ===============================
+
+// Hämta [col,row] från musposition
+function getCell(e) {
+    const rect = fiendeCanvas.getBoundingClientRect();
+    return [
+        Math.floor((e.clientX - rect.left) / cell),
+        Math.floor((e.clientY - rect.top) / cell)
+    ];
+}
+
+// Generera en flotta på minst X skeppsceller (varierande längd)
+function generateFleet(targetArray, totalCells, forbidden = []) {
     targetArray.length = 0;
-    while (targetArray.length < count) {
-        const pos = [
-            Math.floor(Math.random() * gridSize),
-            Math.floor(Math.random() * gridSize)
-        ];
-        if (
-            !targetArray.some(([c, r]) => c === pos[0] && r === pos[1]) && // inte dubbelt
-            !forbidden.some(([c, r]) => c === pos[0] && r === pos[1])     // inte samma som förbjudna
-        ) {
-            targetArray.push(pos);
+
+    while (targetArray.length < totalCells) {
+        const length = Math.floor(Math.random() * 4) + 1; // skepp 1–4 rutor
+        const horizontal = Math.random() < 0.5;
+        let startCol, startRow;
+
+        if (horizontal) {
+            startCol = Math.floor(Math.random() * (gridSize - length + 1));
+            startRow = Math.floor(Math.random() * gridSize);
+        } else {
+            startCol = Math.floor(Math.random() * gridSize);
+            startRow = Math.floor(Math.random() * (gridSize - length + 1));
+        }
+
+        const newShip = [];
+        for (let i = 0; i < length; i++) {
+            const c = horizontal ? startCol + i : startCol;
+            const r = horizontal ? startRow : startRow + i;
+            newShip.push([c, r]);
+        }
+
+        // Kontrollera krockar
+        if (!newShip.some(pos =>
+            targetArray.some(([c, r]) => c === pos[0] && r === pos[1]) ||
+            forbidden.some(([c, r]) => c === pos[0] && r === pos[1])
+        )) {
+            targetArray.push(...newShip);
         }
     }
 }
 
-// Skapa spelplan
-generateShips(shipCells);           // mina skepp
-generateShips(enemyShips, 5, shipCells); // fiendens skepp, EJ samma som mina
+// ===============================
+//  Renderingsfunktioner
+// ===============================
 
 function drawGrid(ctx) {
     ctx.beginPath();
@@ -38,11 +75,11 @@ function drawGrid(ctx) {
     ctx.strokeStyle = "black"; ctx.stroke();
 }
 
-// Ritar X eller träffar
 function drawAllX(ctx, cells, ships) {
     ctx.save();
     ctx.strokeStyle = "black"; ctx.lineWidth = 3;
     const pad = cell * 0.2;
+
     cells.forEach(([c, r]) => {
         if (ships.some(([sc, sr]) => sc === c && sr === r)) {
             ctx.font = `${cell * 0.8}px serif`;
@@ -64,17 +101,18 @@ function drawAllX(ctx, cells, ships) {
 function redrawFiendeCanvas(hover) {
     fiendeCtx.clearRect(0, 0, size, size);
     drawGrid(fiendeCtx);
-    drawAllX(fiendeCtx, clickedCells, enemyShips); // <-- använder fiendens skepp
-    if (hover)
-        fiendeCtx.fillStyle = "rgba(0,0,255,0.2)",
+    drawAllX(fiendeCtx, clickedCells, enemyShips);
+
+    if (hover && !gameOver) {
+        fiendeCtx.fillStyle = "rgba(0,0,255,0.2)";
         fiendeCtx.fillRect(hover[0] * cell, hover[1] * cell, cell, cell);
+    }
 }
 
 function redrawPlayerCanvas() {
     ctx.clearRect(0, 0, size, size);
     drawGrid(ctx);
 
-    // Rita mina skepp
     shipCells.forEach(([c, r]) => {
         ctx.save();
         ctx.fillStyle = "blue";
@@ -84,56 +122,101 @@ function redrawPlayerCanvas() {
         ctx.restore();
     });
 
-    // Ritar datorns drag på mina skepp
     drawAllX(ctx, computerMoves, shipCells);
 }
 
-drawGrid(ctx); drawGrid(fiendeCtx);
+// ===============================
+//  Game Over / Vinst meddelanden
+// ===============================
 
-function getCell(e) {
-    const rect = fiendeCanvas.getBoundingClientRect();
-    return [
-        Math.floor((e.clientX - rect.left) / cell),
-        Math.floor((e.clientY - rect.top) / cell)
-    ];
+function checkGameOver() {
+    const playerLost = shipCells.every(([c, r]) =>
+        computerMoves.some(([cc, rr]) => cc === c && rr === r)
+    );
+    const enemyLost = enemyShips.every(([c, r]) =>
+        clickedCells.some(([cc, rr]) => cc === c && rr === r)
+    );
+
+    if (playerLost || enemyLost) {
+        gameOver = true;
+        setTimeout(() => {
+            if (enemyLost && playerLost) {
+                alert("Oavgjort! 😲");
+            } else if (enemyLost) {
+                alert("DU VANN! 🚢💥");
+            } else {
+                alert("Du förlorade... 😢");
+            }
+        }, 100);
+    }
 }
 
-fiendeCanvas.addEventListener('mousemove', e => redrawFiendeCanvas(getCell(e)));
+// ===============================
+//  Spellogik
+// ===============================
+
+function resetGame() {
+    clickedCells.length = 0;
+    computerMoves.length = 0;
+    gameOver = false;
+
+    const fleetSize = 12; // antal sammanlagda rutor för båda
+
+    generateFleet(shipCells, fleetSize);
+    generateFleet(enemyShips, fleetSize, shipCells);
+
+    redrawFiendeCanvas();
+    redrawPlayerCanvas();
+}
+
+// ===============================
+//  Funktioner som lyssnar på actions
+// ===============================
+
+fiendeCanvas.addEventListener('mousemove', e => !gameOver && redrawFiendeCanvas(getCell(e)));
 fiendeCanvas.addEventListener('mouseleave', () => redrawFiendeCanvas());
+
 fiendeCanvas.addEventListener('click', e => {
+    if (gameOver) return;
+
     const cellPos = getCell(e);
-    if (!clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1]))
-        clickedCells.push(cellPos);
-    redrawFiendeCanvas(cellPos);
 
-    // DATORNS DRAG
-    let randCell;
-    do {
-        randCell = [
-            Math.floor(Math.random() * gridSize),
-            Math.floor(Math.random() * gridSize)
-        ];
-    } while (computerMoves.some(([c, r]) => c === randCell[0] && r === randCell[1]));
+    if (clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1])) {
+        return;
+    }
 
-    computerMoves.push(randCell);
-
-    redrawPlayerCanvas();
-});
-
-document.getElementById('resetBtn').addEventListener('click', function() {
-    clickedCells.length = 0;
-    computerMoves.length = 0;
-    generateShips(shipCells);
-    generateShips(enemyShips, 5, shipCells); // <-- NYTT: skapa nya fiendeskepp
+    clickedCells.push(cellPos);
     redrawFiendeCanvas();
-    redrawPlayerCanvas();
+
+    const hit = enemyShips.some(([c, r]) => c === cellPos[0] && r === cellPos[1]);
+    checkGameOver();
+
+    if (!hit && !gameOver) {
+        let enemyHit;
+        do {
+            let randCell;
+            do {
+                randCell = [
+                    Math.floor(Math.random() * gridSize),
+                    Math.floor(Math.random() * gridSize)
+                ];
+            } while (computerMoves.some(([c, r]) => c === randCell[0] && r === randCell[1]));
+
+            computerMoves.push(randCell);
+            redrawPlayerCanvas();
+
+            enemyHit = shipCells.some(([c, r]) => c === randCell[0] && r === randCell[1]);
+            checkGameOver();
+        } while (enemyHit && !gameOver);
+    }
 });
 
-document.getElementById('startBtn').addEventListener('click', function() {
-    clickedCells.length = 0;
-    computerMoves.length = 0;
-    generateShips(shipCells);
-    generateShips(enemyShips, 5, shipCells); // <-- NYTT: skapa nya fiendeskepp
-    redrawFiendeCanvas();
-    redrawPlayerCanvas();
-});
+document.getElementById('resetBtn').addEventListener('click', resetGame);
+document.getElementById('startBtn')?.addEventListener('click', resetGame);
+
+// ===============================
+//  Initiera
+// ===============================
+drawGrid(ctx);
+drawGrid(fiendeCtx);
+resetGame();
