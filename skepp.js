@@ -212,7 +212,6 @@ fiendeCanvas.addEventListener('click', e => {
 });
 
 document.getElementById('resetBtn').addEventListener('click', resetGame);
-document.getElementById('startBtn')?.addEventListener('click', resetGame);
 
 // ===============================
 //  Initiera
