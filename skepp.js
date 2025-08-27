@@ -1,6 +1,6 @@
-// ===============================
+// ========
 //  Setup
-// ===============================
+// ========
 const canvas = document.getElementById("minCanvas");
 const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
@@ -15,9 +15,9 @@ const computerMoves = [];  // datorns drag
 
 let gameOver = false;
 
-// ===============================
+// ==================
 //  Hjälpfunktioner
-// ===============================
+// ==================
 
 // Hämta [col,row] från musposition
 function getCell(e) {
@@ -62,9 +62,9 @@ function generateFleet(targetArray, totalCells, forbidden = []) {
     }
 }
 
-// ===============================
+// =======================
 //  Renderingsfunktioner
-// ===============================
+// =======================
 
 function drawGrid(ctx) {
     ctx.beginPath();
@@ -151,9 +151,9 @@ function checkGameOver() {
     }
 }
 
-// ===============================
+// ============
 //  Spellogik
-// ===============================
+// ============
 
 function resetGame() {
     clickedCells.length = 0;
@@ -169,9 +169,9 @@ function resetGame() {
     redrawPlayerCanvas();
 }
 
-// ===============================
+// ==========================================================
 //  Funktioner som lyssnar på actions aka mouse track på grid
-// ===============================
+// ==========================================================
 
 fiendeCanvas.addEventListener('mousemove', e => !gameOver && redrawFiendeCanvas(getCell(e)));
 fiendeCanvas.addEventListener('mouseleave', () => redrawFiendeCanvas());
@@ -213,9 +213,9 @@ fiendeCanvas.addEventListener('click', e => {
 
 document.getElementById('resetBtn').addEventListener('click', resetGame);
 
-// ===============================
+// ===========
 //  Initiera
-// ===============================
+// ===========
 drawGrid(ctx);
 drawGrid(fiendeCtx);
 resetGame();
