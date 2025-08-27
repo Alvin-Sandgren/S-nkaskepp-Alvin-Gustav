@@ -32,7 +32,7 @@ section {
 }
 section.darkmode {
   background: none;
-  color: #222;
+  color: #ffffff;
 }
 canvas {
   background-color: rgb(255, 245, 238);
@@ -88,6 +88,7 @@ footer h3 {
   padding: 0;
   margin: 20px auto;
   max-width: 300px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: goldenrod;
   border-radius: 10px;
 }
+

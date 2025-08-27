@@ -24,7 +24,7 @@
       <canvas id="fiendeCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
       <ul id="lederboard">
           <p>Ledar bräda</p>
-          <ul>Du leder!!!!</ul>
+          <p>Du leder</p>
       </ul>
   </section>
 
