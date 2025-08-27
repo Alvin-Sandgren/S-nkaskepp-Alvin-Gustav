@@ -170,7 +170,7 @@ function resetGame() {
 }
 
 // ===============================
-//  Funktioner som lyssnar på actions
+//  Funktioner som lyssnar på actions aka mouse track på grid
 // ===============================
 
 fiendeCanvas.addEventListener('mousemove', e => !gameOver && redrawFiendeCanvas(getCell(e)));
