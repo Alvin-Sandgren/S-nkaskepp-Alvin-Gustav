@@ -1,35 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boooooom🚢🚢</title>
-  <link rel="stylesheet" href="skepp.css">
-  <script src="skepp.js" defer></script>
-  <script src="knapp.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inlogg</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="login.js" defer></script>
 </head>
-
 <body>
-  <h1>Sänka skepp</h1>
-  <button onclick="toggleMode(this)">Klassiskt Läge</button>
-  <button id="resetBtn">Börja om</button>
-  <button onclick="darkmode()">Dark Mode</button>
-  <p>Spelläge: <span id="modeDisplay">Klassiskt Läge</span></p>
-  <h2>Ryskt Läge innehåller fler skepp</h2>
-  <p>Träff=💥</p>
-  <p>Miss=❌</p>
-
-  <section id="spelplan">
-      <canvas id="minCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
-      <canvas id="fiendeCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
-      <ul id="lederboard">
-          <p>Ledar bräda</p>
-          <ul>Du leder!!!!</ul>
-      </ul>
-  </section>
-
-  <footer>
-      <h3>🚢🚢🚢Yahooo🚢🚢🚢</h3>
-  </footer>
+    <h1>Logga in för sänka skäpp</h1>
+    <p>Om du inte har ett konto så gör du ett nytt igenom att fylla i fälten nedan.</p>
+    <input type="text" id="username" placeholder="Användarnamn">
+    <input type="password" id="password" placeholder="Lösenord">
 </body>
 </html>

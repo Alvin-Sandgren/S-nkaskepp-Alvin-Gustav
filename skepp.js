@@ -126,7 +126,7 @@ function redrawPlayerCanvas() {
 }
 
 // ===============================
-//  Game Over / Vinst meddelanden
+//  Game Over / Vinst meddelanden / Leaderboard update
 // ===============================
 
 function checkGameOver() {
@@ -144,11 +144,18 @@ function checkGameOver() {
                 alert("Oavgjort! 😲");
             } else if (enemyLost) {
                 alert("DU VANN! 🚢💥");
+                points += 1;
+                updateLeaderboard(points);
             } else {
                 alert("Du förlorade... 😢");
             }
         }, 100);
     }
+}
+
+function updateLeaderboard(points) {
+    const leaderboard = document.querySelector('#Leaderboard ul')
+    leaderboard.innerHTML = `<li>Poäng: ${points}</li>`;
 }
 
 // ===============================
