@@ -115,7 +115,7 @@ function redrawPlayerCanvas() {
 
     shipCells.forEach(([c, r]) => {
         ctx.save();
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "darkgreen";
         ctx.beginPath();
         ctx.arc(c * cell + cell / 2, r * cell + cell / 2, cell * 0.3, 0, 2 * Math.PI);
         ctx.fill();
