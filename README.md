@@ -6,3 +6,5 @@ erik är söt -Alvin
 08/27 Gustav har blivit schizo han behöver 30 olika filer för att fixa ledarbok-11:30
 08/27 Erik har kollat igenom koden och småfixat och fixat med frontend 
 Gustav Fixade mycket till ledar brädan, funktion och det men inget inlogg ännu
+
+08/28   Idag har Alvin, löst så ryskt läge fungerar, vilket påverkade en del logik som också är löst
