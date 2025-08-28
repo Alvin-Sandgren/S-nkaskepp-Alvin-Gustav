@@ -26,7 +26,7 @@
       <canvas id="minCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
       <canvas id="fiendeCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
       <ul id="lederboard">
-          <p>Ledar bräda</p>
+          <?php require_once 'leaderboard.php'; ?>
       </ul>
   </section>
 
