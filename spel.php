@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="skepp.css">
   <script src="skepp.js" defer></script>
   <script src="knapp.js" defer></script>
+  <?php
+    require_once 'db.php';
+    require_once 'check_inlogg.php';
+  ?>
 </head>
 
 <body>
@@ -23,8 +27,8 @@
       <canvas id="minCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
       <canvas id="fiendeCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
       <ul id="lederboard">
-          <p>Ledar bräda</p>
-          <p>Du leder</p>
+
+          <?php require_once 'leaderboard.php'; ?>
       </ul>
   </section>
 

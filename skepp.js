@@ -127,7 +127,7 @@ function redrawPlayerCanvas() {
 }
 
 // ===============================
-//  Game Over / Vinst meddelanden
+//  Game Over / Vinst meddelanden / Leaderboard update
 // ===============================
 
 function checkGameOver() {
@@ -144,7 +144,9 @@ function checkGameOver() {
             if (enemyLost && playerLost) {
                 alert("Oavgjort! 😲");
             } else if (enemyLost) {
-                alert("DU VANN! Yahoooooo 🚢💥");
+                alert("DU VANN! 🚢💥");
+                points += 1;
+                updateLeaderboard(points);
             } else {
                 alert("Du förlorade... dålig 😢");
             }
@@ -152,7 +154,12 @@ function checkGameOver() {
     }
 }
 
-// ============
+function updateLeaderboard(points) {
+    const leaderboard = document.querySelector('#Leaderboard ul')
+    leaderboard.innerHTML = `<li>Poäng: ${points}</li>`;
+}
+
+// ===============================
 //  Spellogik
 // ============
 
