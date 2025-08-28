@@ -7,4 +7,4 @@ erik är söt -Alvin
 08/27 Erik har kollat igenom koden och småfixat och fixat med frontend 
 Gustav Fixade mycket till ledar brädan, funktion och det men inget inlogg ännu
 
-08/28   Idag har Alvin, löst så ryskt läge fungerar, vilket påverkade en del logik som också är löst
+08/28   Idag har Alvin, löst så ryskt läge fungerar, vilket påverkade en del logik som också är löst. Gustav tycker det är lite jobbigt för allt funkar inte magiskt, Alexander säger att det borde göra det, GW håller med Alexander fast Gw vet inte vad Alexander sa.
