@@ -81,12 +81,13 @@ function drawAllX(ctx, cells, ships) {
     const pad = cell * 0.2;
 
     cells.forEach(([c, r]) => {
-        if (ships.some(([sc, sr]) => sc === c && sr === r)) {
-            ctx.font = `${cell * 0.8}px serif`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
-        } else {
+    if (ships.some(([sc, sr]) => sc === c && sr === r)) {
+        ctx.font = `${cell * 0.8}px serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "red"; 
+        ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
+    } else {
             ctx.beginPath();
             ctx.moveTo(c * cell + pad, r * cell + pad);
             ctx.lineTo((c + 1) * cell - pad, (r + 1) * cell - pad);
@@ -115,7 +116,7 @@ function redrawPlayerCanvas() {
 
     shipCells.forEach(([c, r]) => {
         ctx.save();
-        ctx.fillStyle = "darkgreen";
+        ctx.fillStyle = "green";
         ctx.beginPath();
         ctx.arc(c * cell + cell / 2, r * cell + cell / 2, cell * 0.3, 0, 2 * Math.PI);
         ctx.fill();
@@ -143,9 +144,9 @@ function checkGameOver() {
             if (enemyLost && playerLost) {
                 alert("Oavgjort! 😲");
             } else if (enemyLost) {
-                alert("DU VANN! 🚢💥");
+                alert("DU VANN! Yahoooooo 🚢💥");
             } else {
-                alert("Du förlorade... 😢");
+                alert("Du förlorade... dålig 😢");
             }
         }, 100);
     }
