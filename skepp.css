@@ -5,12 +5,14 @@ h1{
   padding: 5px;
 
 }
+
 h2{
   font-size: 14px;
   font-weight: normal;
   margin: 5px;
   margin-bottom: 20px;
 }
+
 body{
   text-align: center;
   margin: auto;
@@ -30,13 +32,16 @@ section {
   background: none;
   color: #222;
 }
+
 section.darkmode {
   background: none;
   color: #ffffff;
 }
+
 canvas {
   background-color: rgb(255, 245, 238);
 }
+
 body.darkmode canvas {
   background-color: gainsboro;
 }
@@ -99,6 +104,7 @@ form {
   border-radius: 10px;
   padding: 10px;  
 }
+
 input{
   margin: 5px;
   padding: 10px;
@@ -111,6 +117,7 @@ input{
   cursor: pointer;
   
 }
+
 input:hover {
   background-color: darkgoldenrod;
   color: #ffffff;
