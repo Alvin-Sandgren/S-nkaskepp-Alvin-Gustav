@@ -1,5 +1,6 @@
 <?php
     require_once 'db.php';
+    require_once 'check_inlogg.php';
     $sql = "SELECT users.username, points.points 
             FROM users 
             JOIN points ON users.ID = points.ID 

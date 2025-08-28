@@ -8,6 +8,7 @@
     <script src="login.js" defer></script>
     <?php
     require_once 'db.php';
+    require_once 'check_inlogg.php';
     ?>
 </head>
 <body>
