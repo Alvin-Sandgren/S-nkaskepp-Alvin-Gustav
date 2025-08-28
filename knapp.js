@@ -1,19 +1,28 @@
+let currentMode = "normal"; 
+
 function toggleMode(button) {
     const modeDisplay = document.getElementById("modeDisplay");
+
     if (button.textContent === "Klassiskt Läge") {
         button.textContent = "Ryskt Läge";
         modeDisplay.textContent = "Ryskt Läge";
+        currentMode = "ryskt";
         console.log("Bytte till Ryskt Läge");
+        rysktläge(); 
     } else {
         button.textContent = "Klassiskt Läge";
         modeDisplay.textContent = "Klassiskt Läge";
+        currentMode = "normal";
         console.log("Bytte till Klassiskt Läge");
+        normalmode(); 
     }
 }
 
-// dark mode
 function darkmode() {
-    var element = document.body;
-    element.classList.toggle("darkmode");
-    
+    document.body.classList.toggle("darkmode");
 }
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+    if (currentMode === "ryskt") rysktläge();
+    else normalmode();
+});

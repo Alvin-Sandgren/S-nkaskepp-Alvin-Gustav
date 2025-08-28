@@ -155,18 +155,34 @@ function checkGameOver() {
 //  Spellogik
 // ============
 
-function resetGame() {
+function resetGame(fleetSize = 12) {  // default 12 rutor
     clickedCells.length = 0;
     computerMoves.length = 0;
     gameOver = false;
-
-    const fleetSize = 12; // antal sammanlagda rutor för båda
 
     generateFleet(shipCells, fleetSize);
     generateFleet(enemyShips, fleetSize, shipCells);
 
     redrawFiendeCanvas();
     redrawPlayerCanvas();
+}
+
+function normalmode() {
+    resetGame(12);  // normalmode = 12 rutor
+}
+
+function rysktläge() {
+    resetGame(15);  // ryskt läge = 15 rutor
+}
+
+function gamemode() {
+    const element = document.body;
+    element.classList.toggle("gamemode");
+    if (element.classList.contains("gamemode")) {
+        rysktläge();
+    } else {
+        normalmode();
+    }
 }
 
 // ==========================================================
@@ -218,4 +234,5 @@ document.getElementById('resetBtn').addEventListener('click', resetGame);
 // ===========
 drawGrid(ctx);
 drawGrid(fiendeCtx);
-resetGame();
+normalmode();
+
