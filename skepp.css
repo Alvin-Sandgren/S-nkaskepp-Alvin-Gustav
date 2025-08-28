@@ -1,5 +1,5 @@
 h1{
-  font-size: 40px;
+  font-size: 45px;
   text-align: center;
   margin: 5px;
   padding: 5px;
@@ -44,7 +44,7 @@ body.darkmode canvas {
 button{
   margin: 5px;
   padding: 10px;
-  font-size: 15px;
+  font-size: 12px;
   border: 2px solid black;
   border-radius: 25px;
   background-color: goldenrod;
@@ -93,3 +93,20 @@ footer h3 {
   border: 1px solid black;
 }
 
+form {
+  margin: 20px auto;
+  max-width: 300px;
+  border-radius: 10px;
+  padding: 10px;  
+}
+input{
+  margin: 5px;
+  padding: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: black;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: goldenrod;
+  cursor: pointer;
+}
