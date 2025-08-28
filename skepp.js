@@ -155,7 +155,7 @@ function checkGameOver() {
 //  Spellogik
 // ============
 
-function resetGame(fleetSize = 12) {  // default 12 rutor
+function resetGame(fleetSize = 12) {  
     clickedCells.length = 0;
     computerMoves.length = 0;
     gameOver = false;
@@ -168,11 +168,11 @@ function resetGame(fleetSize = 12) {  // default 12 rutor
 }
 
 function normalmode() {
-    resetGame(12);  // normalmode = 12 rutor
+    resetGame(11);  
 }
 
 function rysktläge() {
-    resetGame(15);  // ryskt läge = 15 rutor
+    resetGame(15);  
 }
 
 function gamemode() {
