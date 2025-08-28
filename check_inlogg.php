@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && $user['password'] === $password) {
         // Hämta poäng från points-tabellen
-        $sql_points = "SELECT points FROM points WHERE ID = ?";
+        $sql_points = "SELECT points FROM Highacore WHERE ID = ?";
         $stmt_points = mysqli_prepare($conn, $sql_points);
         mysqli_stmt_bind_param($stmt_points, "i", $user['ID']);
         mysqli_stmt_execute($stmt_points);
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $new_user_id = mysqli_insert_id($conn);
 
         // Skapa rad i points-tabellen
-        $sql_points_insert = "INSERT INTO points (ID, points) VALUES (?, 0)";
+        $sql_points_insert = "INSERT INTO Highacore (ID, points) VALUES (?, 0)";
         $stmt_points_insert = mysqli_prepare($conn, $sql_points_insert);
         mysqli_stmt_bind_param($stmt_points_insert, "i", $new_user_id);
         mysqli_stmt_execute($stmt_points_insert);

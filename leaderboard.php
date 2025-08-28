@@ -1,13 +1,12 @@
 <?php
     require_once 'db.php';
-    require_once 'check_inlogg.php';
-    $sql = "SELECT users.username, points.points 
+    $sql = "SELECT users.username, Highacore.points 
             FROM users 
-            JOIN points ON users.ID = points.ID 
-            ORDER BY points.points DESC 
+            JOIN Highacore ON users.ID = Highacore.ID 
+            ORDER BY Highacore.points DESC 
             LIMIT 10";
     $result = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<li>{$row['username']}: {$row['points']} poäng</li>";
     }
-    ?>
+?>
