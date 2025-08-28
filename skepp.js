@@ -1,6 +1,6 @@
-// ===============================
+// ========
 //  Setup
-// ===============================
+// ========
 const canvas = document.getElementById("minCanvas");
 const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
@@ -15,9 +15,9 @@ const computerMoves = [];  // datorns drag
 
 let gameOver = false;
 
-// ===============================
+// ==================
 //  Hjälpfunktioner
-// ===============================
+// ==================
 
 // Hämta [col,row] från musposition
 function getCell(e) {
@@ -62,9 +62,9 @@ function generateFleet(targetArray, totalCells, forbidden = []) {
     }
 }
 
-// ===============================
+// =======================
 //  Renderingsfunktioner
-// ===============================
+// =======================
 
 function drawGrid(ctx) {
     ctx.beginPath();
@@ -81,12 +81,13 @@ function drawAllX(ctx, cells, ships) {
     const pad = cell * 0.2;
 
     cells.forEach(([c, r]) => {
-        if (ships.some(([sc, sr]) => sc === c && sr === r)) {
-            ctx.font = `${cell * 0.8}px serif`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
-        } else {
+    if (ships.some(([sc, sr]) => sc === c && sr === r)) {
+        ctx.font = `${cell * 0.8}px serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "red"; 
+        ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
+    } else {
             ctx.beginPath();
             ctx.moveTo(c * cell + pad, r * cell + pad);
             ctx.lineTo((c + 1) * cell - pad, (r + 1) * cell - pad);
@@ -115,7 +116,7 @@ function redrawPlayerCanvas() {
 
     shipCells.forEach(([c, r]) => {
         ctx.save();
-        ctx.fillStyle = "darkgreen";
+        ctx.fillStyle = "green";
         ctx.beginPath();
         ctx.arc(c * cell + cell / 2, r * cell + cell / 2, cell * 0.3, 0, 2 * Math.PI);
         ctx.fill();
@@ -147,7 +148,7 @@ function checkGameOver() {
                 points += 1;
                 updateLeaderboard(points);
             } else {
-                alert("Du förlorade... 😢");
+                alert("Du förlorade... dålig 😢");
             }
         }, 100);
     }
@@ -160,14 +161,12 @@ function updateLeaderboard(points) {
 
 // ===============================
 //  Spellogik
-// ===============================
+// ============
 
-function resetGame() {
+function resetGame(fleetSize = 12) {  
     clickedCells.length = 0;
     computerMoves.length = 0;
     gameOver = false;
-
-    const fleetSize = 12; // antal sammanlagda rutor för båda
 
     generateFleet(shipCells, fleetSize);
     generateFleet(enemyShips, fleetSize, shipCells);
@@ -176,9 +175,27 @@ function resetGame() {
     redrawPlayerCanvas();
 }
 
-// ===============================
+function normalmode() {
+    resetGame(11);  
+}
+
+function rysktläge() {
+    resetGame(15);  
+}
+
+function gamemode() {
+    const element = document.body;
+    element.classList.toggle("gamemode");
+    if (element.classList.contains("gamemode")) {
+        rysktläge();
+    } else {
+        normalmode();
+    }
+}
+
+// ==========================================================
 //  Funktioner som lyssnar på actions aka mouse track på grid
-// ===============================
+// ==========================================================
 
 fiendeCanvas.addEventListener('mousemove', e => !gameOver && redrawFiendeCanvas(getCell(e)));
 fiendeCanvas.addEventListener('mouseleave', () => redrawFiendeCanvas());
@@ -220,9 +237,10 @@ fiendeCanvas.addEventListener('click', e => {
 
 document.getElementById('resetBtn').addEventListener('click', resetGame);
 
-// ===============================
+// ===========
 //  Initiera
-// ===============================
+// ===========
 drawGrid(ctx);
 drawGrid(fiendeCtx);
-resetGame();
+normalmode();
+
