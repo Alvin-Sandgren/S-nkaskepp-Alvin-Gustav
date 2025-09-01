@@ -1,5 +1,6 @@
 <?php
 session_start();
+print_r(array)
 ?>
 <!DOCTYPE html>
 <html lang="en">
