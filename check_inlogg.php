@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = mysqli_fetch_assoc($result);
 
     if ($user && $user['password'] === $password) {
-        // Hämta poäng från points-tabellen
-        $sql_points = "SELECT points FROM points WHERE ID = ?";
+        // Hämta poäng från Highacore-tabellen
+        $sql_points = "SELECT points FROM Highacore WHERE ID = ?";
         $stmt_points = mysqli_prepare($conn, $sql_points);
         mysqli_stmt_bind_param($stmt_points, "i", $user['ID']);
         mysqli_stmt_execute($stmt_points);
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user['ID'];
         $_SESSION['points'] = $points_row ? $points_row['points'] : 0;
 
-        header("Location: game.php");
+        header("Location: spel.php");
         exit();
     } else if (!$user) {
         // Skapa nytt konto
@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Hämta det nya användar-ID:t
         $new_user_id = mysqli_insert_id($conn);
 
-        // Skapa rad i points-tabellen
-        $sql_points_insert = "INSERT INTO points (ID, points) VALUES (?, 0)";
+        // Skapa rad i Highacore-tabellen
+        $sql_points_insert = "INSERT INTO Highacore (ID, points) VALUES (?, 0)";
         $stmt_points_insert = mysqli_prepare($conn, $sql_points_insert);
         mysqli_stmt_bind_param($stmt_points_insert, "i", $new_user_id);
         mysqli_stmt_execute($stmt_points_insert);
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $new_user_id;
         $_SESSION['points'] = 0;
 
-        header("Location: game.php");
+        header("Location: spel.php");
         exit();
     } else {
         $error = "Fel användarnamn eller lösenord!";

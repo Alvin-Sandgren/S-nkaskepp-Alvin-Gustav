@@ -1,16 +1,18 @@
 h1{
-  font-size: 40px;
+  font-size: 45px;
   text-align: center;
   margin: 5px;
   padding: 5px;
 
 }
+
 h2{
   font-size: 14px;
   font-weight: normal;
   margin: 5px;
   margin-bottom: 20px;
 }
+
 body{
   text-align: center;
   margin: auto;
@@ -30,13 +32,16 @@ section {
   background: none;
   color: #222;
 }
+
 section.darkmode {
   background: none;
   color: #ffffff;
 }
+
 canvas {
   background-color: rgb(255, 245, 238);
 }
+
 body.darkmode canvas {
   background-color: gainsboro;
 }
@@ -44,7 +49,7 @@ body.darkmode canvas {
 button{
   margin: 5px;
   padding: 10px;
-  font-size: 15px;
+  font-size: 12px;
   border: 2px solid black;
   border-radius: 25px;
   background-color: goldenrod;
@@ -73,6 +78,7 @@ footer {
   margin-top: 10px;
   font-size: 30px;
 }
+
 footer h3 {
   display: inline-block;
   animation: sail 5s linear infinite;
@@ -93,3 +99,27 @@ footer h3 {
   border: 1px solid black;
 }
 
+form {
+  margin: 20px auto;
+  max-width: 300px;
+  border-radius: 10px;
+  padding: 10px;  
+}
+
+input{
+  margin: 5px;
+  padding: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: black;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: goldenrod;
+  cursor: pointer;
+  
+}
+
+input:hover {
+  background-color: darkgoldenrod;
+  color: #ffffff;
+}
