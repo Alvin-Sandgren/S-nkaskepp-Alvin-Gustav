@@ -6,7 +6,6 @@
   <title>Boooooom🚢🚢</title>
   <link rel="stylesheet" href="skepp.css">
   <script src="skepp.js" defer></script>
-  <script src="knapp.js" defer></script>
   <?php
     require_once 'db.php';
     require_once 'check_inlogg.php';
