@@ -176,7 +176,6 @@ function updateLeaderboard(points) {
             console.error("Failed to update points:", data.error);
         }
     })
-    .catch(err => console.error("Network or fetch error:", err));
 }
 // ===============================
 //  Spellogik
