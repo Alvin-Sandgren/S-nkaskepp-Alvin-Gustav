@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once 'db.php';
-print_r();
 
 // Only process POST requests (login or new user)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
