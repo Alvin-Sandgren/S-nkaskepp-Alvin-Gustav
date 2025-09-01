@@ -154,17 +154,30 @@ function checkGameOver() {
     }
 }
 
-fetch("leaderboard.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ points: points })
-})
-.then(res => res.json())  // now this will work
-.then(data => {
-    if (data.success) console.log("Points added:", data.newPoints);
-    else console.error("Failed:", data.error);
-})
-.catch(err => console.error("Network or fetch error:", err));
+function updateLeaderboard(points) {
+    fetch("leaderboard.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ points: points })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            console.log(`Points successfully added! New points: ${points}`);
+            
+            // Refresh leaderboard
+            fetch("leaderboard.php")
+                .then(r => r.text())
+                .then(html => {
+                    const leaderboard = document.getElementById('lederboard');
+                    if (leaderboard) leaderboard.innerHTML = html;
+                });
+        } else {
+            console.error("Failed to update points:", data.error);
+        }
+    })
+    .catch(err => console.error("Network or fetch error:", err));
+}
 // ===============================
 //  Spellogik
 // ===============================
