@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $new_user_id;
         $_SESSION['points'] = 0;
 
-        header("Location: spel.php");
         exit();
     } else {
         $error = "Fel användarnamn eller lösenord!";

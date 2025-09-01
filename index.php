@@ -16,7 +16,7 @@
     <h1>Logga in för sänka skäpp</h1>
     <p>Om du inte har ett konto så gör du ett nytt igenom att fylla i fälten nedan.</p> <br><br>
     <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
-    <form method="POST">
+    <form method="POST" header="spel.php">
         <input type="text" name="username" placeholder="Användarnamn" required>
         <input type="password" name="password" placeholder="Lösenord" required> <br>
         <button type="submit">Logga in</button>
