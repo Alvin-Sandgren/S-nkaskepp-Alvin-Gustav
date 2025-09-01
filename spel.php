@@ -1,6 +1,6 @@
 <?php
 session_start();
-print_r(array)
+print_r();
 ?>
 <!DOCTYPE html>
 <html lang="en">
