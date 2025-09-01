@@ -126,9 +126,9 @@ function redrawPlayerCanvas() {
     drawAllX(ctx, computerMoves, shipCells);
 }
 
-// ===============================
+// ===================================================
 //  Game Over / Vinst meddelanden / Leaderboard update
-// ===============================
+// ===================================================
 
 function checkGameOver() {
     const playerLost = shipCells.every(([c, r]) =>
@@ -172,7 +172,7 @@ function updateLeaderboard(points) {
 
 // ===============================
 //  Spellogik
-// ============
+// ===============================
 
 function resetGame(fleetSize = 12) {  
     clickedCells.length = 0;
