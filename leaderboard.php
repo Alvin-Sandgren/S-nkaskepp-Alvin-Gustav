@@ -4,6 +4,7 @@ require_once 'db.php';
 require_once 'check_inlogg.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
     $data = json_decode(file_get_contents("php://input"), true);
     if (!$data || !isset($data['points'])) {
         echo json_encode(["success" => false, "error" => "No points received"]);
