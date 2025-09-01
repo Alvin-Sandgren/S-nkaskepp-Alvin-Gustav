@@ -1,18 +1,16 @@
 <?php
 session_start();
 require_once 'db.php';
-require_once 'check_inlogg.php';
 
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(["success" => false, "error" => "Not logged in"]);
+    exit;
+}
+
+// If points are sent via POST JSON
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Content-Type: application/json'); // ensure JSON output
-
-    if (!isset($_SESSION['user_id'])) {
-        echo json_encode(["success" => false, "error" => "No user logged in"]);
-        exit;
-    }
-
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!$data || !isset($data['points'])) {
+    if (!isset($data['points'])) {
         echo json_encode(["success" => false, "error" => "No points received"]);
         exit;
     }
@@ -32,10 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// GET request — only output leaderboard HTML
+// Otherwise GET request → return leaderboard HTML
 $sql = "SELECT users.username, Highacore.points FROM users JOIN Highacore ON users.ID = Highacore.ID ORDER BY Highacore.points DESC LIMIT 10";
 $result = mysqli_query($conn, $sql);
 
 while ($row = mysqli_fetch_assoc($result)) {
     echo "<li>{$row['username']}: {$row['points']} poäng</li>";
 }
+?>
