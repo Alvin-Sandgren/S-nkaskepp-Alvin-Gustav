@@ -145,8 +145,7 @@ function checkGameOver() {
                 alert("Oavgjort! 😲");
             } else if (enemyLost) {
                 alert("DU VANN! 🚢💥");
-                points += 1;
-                updateLeaderboard(points);
+                updateLeaderboard(1);
             } else {
                 alert("Du förlorade... dålig 😢");
             }
@@ -155,8 +154,20 @@ function checkGameOver() {
 }
 
 function updateLeaderboard(points) {
-    const leaderboard = document.querySelector('#Leaderboard ul')
-    leaderboard.innerHTML = `<li>Poäng: ${points}</li>`;
+    fetch("leaderboard.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ points: points }) // send points to PHP
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            console.log(`Points successfully added! New points: ${points}`);
+        } else {
+            console.error("Failed to update points:", data.error);
+        }
+    })
+    .catch(err => console.error("Network or fetch error:", err));
 }
 
 // ===============================
