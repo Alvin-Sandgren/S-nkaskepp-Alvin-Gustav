@@ -137,17 +137,20 @@ function checkGameOver() {
     );
 
     if (playerLost || enemyLost) {
-        window.gameOver = true;
-        setTimeout(() => {
-            if (enemyLost && playerLost) {
-                alert("Oavgjort! 😲");
-            } else if (enemyLost) {
-                alert("DU VANN! 🚢💥");
-                updateLeaderboard(1);
-            } else {
-                alert("Du förlorade... dålig 😢");
-            }
-        }, 100);
+        if (!window.gameOver) { // only run once
+            window.gameOver = true;
+
+            setTimeout(() => {
+                if (enemyLost && playerLost) {
+                    alert("Oavgjort! 😲");
+                } else if (enemyLost) {
+                    alert("DU VANN! 🚢💥");
+                    updateLeaderboard(1); // only add points if player won
+                } else {
+                    alert("Du förlorade... dålig 😢");
+                }
+            }, 100);
+        }
     }
 }
 
@@ -161,13 +164,19 @@ function updateLeaderboard(points) {
     .then(data => {
         if (data.success) {
             console.log(`Points successfully added! New points: ${points}`);
+            // Optionally, refresh leaderboard
+            const leaderboard = document.getElementById('lederboard');
+            if (leaderboard) {
+                fetch("leaderboard.php")
+                    .then(r => r.text())
+                    .then(html => leaderboard.innerHTML = html);
+            }
         } else {
             console.error("Failed to update points:", data.error);
         }
     })
     .catch(err => console.error("Network or fetch error:", err));
 }
-
 // ===============================
 //  Spellogik
 // ===============================
