@@ -1,7 +1,6 @@
 <?php
     require_once 'db.php';
     require_once 'check_inlogg.php';
-    echo '<script src="skepp.js"></script>';
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents("php://input"), true);
