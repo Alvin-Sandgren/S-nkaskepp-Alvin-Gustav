@@ -1,6 +1,3 @@
-// ========
-//  Setup
-// ========
 const canvas = document.getElementById("minCanvas");
 const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
