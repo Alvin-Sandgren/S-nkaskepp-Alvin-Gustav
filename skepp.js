@@ -13,13 +13,13 @@ const shipCells = [];      // spelarens skepp
 const enemyShips = [];     // fiendens skepp
 const computerMoves = [];  // datorns drag
 
-// Global gameOver variable
-window.gameOver = window.gameOver || false;
+let gameOver = false;
 
 // ==================
 //  Hjälpfunktioner
 // ==================
 
+// Hämta [col,row] från musposition
 function getCell(e) {
     const rect = fiendeCanvas.getBoundingClientRect();
     return [
@@ -28,11 +28,12 @@ function getCell(e) {
     ];
 }
 
+// Generera en flotta på minst X skeppsceller (varierande längd)
 function generateFleet(targetArray, totalCells, forbidden = []) {
     targetArray.length = 0;
 
     while (targetArray.length < totalCells) {
-        const length = Math.floor(Math.random() * 4) + 1;
+        const length = Math.floor(Math.random() * 4) + 1; // skepp 1–4 rutor
         const horizontal = Math.random() < 0.5;
         let startCol, startRow;
 
@@ -51,6 +52,7 @@ function generateFleet(targetArray, totalCells, forbidden = []) {
             newShip.push([c, r]);
         }
 
+        // Kontrollera krockar
         if (!newShip.some(pos =>
             targetArray.some(([c, r]) => c === pos[0] && r === pos[1]) ||
             forbidden.some(([c, r]) => c === pos[0] && r === pos[1])
@@ -79,13 +81,13 @@ function drawAllX(ctx, cells, ships) {
     const pad = cell * 0.2;
 
     cells.forEach(([c, r]) => {
-        if (ships.some(([sc, sr]) => sc === c && sr === r)) {
-            ctx.font = `${cell * 0.8}px serif`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = "red"; 
-            ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
-        } else {
+    if (ships.some(([sc, sr]) => sc === c && sr === r)) {
+        ctx.font = `${cell * 0.8}px serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "red"; 
+        ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
+    } else {
             ctx.beginPath();
             ctx.moveTo(c * cell + pad, r * cell + pad);
             ctx.lineTo((c + 1) * cell - pad, (r + 1) * cell - pad);
@@ -102,7 +104,7 @@ function redrawFiendeCanvas(hover) {
     drawGrid(fiendeCtx);
     drawAllX(fiendeCtx, clickedCells, enemyShips);
 
-    if (hover && !window.gameOver) {
+    if (hover && !gameOver) {
         fiendeCtx.fillStyle = "rgba(0,0,255,0.2)";
         fiendeCtx.fillRect(hover[0] * cell, hover[1] * cell, cell, cell);
     }
@@ -137,20 +139,17 @@ function checkGameOver() {
     );
 
     if (playerLost || enemyLost) {
-        if (!window.gameOver) { // only run once
-            window.gameOver = true;
-
-            setTimeout(() => {
-                if (enemyLost && playerLost) {
-                    alert("Oavgjort! 😲");
-                } else if (enemyLost) {
-                    alert("DU VANN! 🚢💥");
-                    updateLeaderboard(1); // only add points if player won
-                } else {
-                    alert("Du förlorade... dålig 😢");
-                }
-            }, 100);
-        }
+        gameOver = true;
+        setTimeout(() => {
+            if (enemyLost && playerLost) {
+                alert("Oavgjort! 😲");
+            } else if (enemyLost) {
+                alert("DU VANN! 🚢💥");
+                updateLeaderboard(1);
+            } else {
+                alert("Du förlorade... dålig 😢");
+            }
+        }, 100);
     }
 }
 
@@ -158,25 +157,19 @@ function updateLeaderboard(points) {
     fetch("leaderboard.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ points: points })
+        body: JSON.stringify({ points: points }) // send points to PHP
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
             console.log(`Points successfully added! New points: ${points}`);
-            // Optionally, refresh leaderboard
-            const leaderboard = document.getElementById('lederboard');
-            if (leaderboard) {
-                fetch("leaderboard.php")
-                    .then(r => r.text())
-                    .then(html => leaderboard.innerHTML = html);
-            }
         } else {
             console.error("Failed to update points:", data.error);
         }
     })
     .catch(err => console.error("Network or fetch error:", err));
 }
+
 // ===============================
 //  Spellogik
 // ===============================
@@ -184,7 +177,7 @@ function updateLeaderboard(points) {
 function resetGame(fleetSize = 12) {  
     clickedCells.length = 0;
     computerMoves.length = 0;
-    window.gameOver = false;
+    gameOver = false;
 
     generateFleet(shipCells, fleetSize);
     generateFleet(enemyShips, fleetSize, shipCells);
@@ -215,15 +208,17 @@ function gamemode() {
 //  Funktioner som lyssnar på actions aka mouse track på grid
 // ==========================================================
 
-fiendeCanvas.addEventListener('mousemove', e => !window.gameOver && redrawFiendeCanvas(getCell(e)));
+fiendeCanvas.addEventListener('mousemove', e => !gameOver && redrawFiendeCanvas(getCell(e)));
 fiendeCanvas.addEventListener('mouseleave', () => redrawFiendeCanvas());
 
 fiendeCanvas.addEventListener('click', e => {
-    if (window.gameOver) return;
+    if (gameOver) return;
 
     const cellPos = getCell(e);
 
-    if (clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1])) return;
+    if (clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1])) {
+        return;
+    }
 
     clickedCells.push(cellPos);
     redrawFiendeCanvas();
@@ -231,7 +226,7 @@ fiendeCanvas.addEventListener('click', e => {
     const hit = enemyShips.some(([c, r]) => c === cellPos[0] && r === cellPos[1]);
     checkGameOver();
 
-    if (!hit && !window.gameOver) {
+    if (!hit && !gameOver) {
         let enemyHit;
         do {
             let randCell;
@@ -247,7 +242,7 @@ fiendeCanvas.addEventListener('click', e => {
 
             enemyHit = shipCells.some(([c, r]) => c === randCell[0] && r === randCell[1]);
             checkGameOver();
-        } while (enemyHit && !window.gameOver);
+        } while (enemyHit && !gameOver);
     }
 });
 
