@@ -1,6 +1,5 @@
 <?php
 session_start();
-print_r();
 ?>
 <!DOCTYPE html>
 <html lang="en">
