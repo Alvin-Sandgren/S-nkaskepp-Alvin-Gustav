@@ -10,3 +10,5 @@ Gustav Fixade mycket till ledar brädan, funktion och det men inget inlogg ännu
 08/28   Idag har Alvin, löst så ryskt läge fungerar, vilket påverkade en del logik som också är löst. Gustav tycker det är lite jobbigt för allt funkar inte magiskt, Alexander säger att det borde göra det, GW håller med Alexander fast Gw vet inte vad Alexander sa.
 
 08/28 idag har Erik fixat så att 💥 emojin är lika tydliga på båda planerna och fixat med inlogg och små fixad med skepp
+
+09/01 Gustav har slitit ut håret då han har försökt fixa leaderboard, han(jag) löste det men man kan inte logga in, men du kan göra ett nytt konto. Om du ska logga in med ett befintligt konto och fyller i allt rätt så blir det fof fel lösenord. AKA morgondagens problem.(Kim får en shout out pga av alla hjälp, han skulle valt detta ämne istället för japanska 2!!!)
