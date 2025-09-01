@@ -13,7 +13,9 @@ const shipCells = [];      // spelarens skepp
 const enemyShips = [];     // fiendens skepp
 const computerMoves = [];  // datorns drag
 
-let gameOver = false;
+if (typeof gameOver === "undefined") {
+    let gameOver = false;
+}
 
 // ==================
 //  Hjälpfunktioner
@@ -254,4 +256,3 @@ document.getElementById('resetBtn').addEventListener('click', resetGame);
 drawGrid(ctx);
 drawGrid(fiendeCtx);
 normalmode();
-
