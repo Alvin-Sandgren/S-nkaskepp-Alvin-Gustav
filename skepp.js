@@ -164,13 +164,14 @@ function updateLeaderboard(points) {
     .then(data => {
         if (data.success) {
             console.log(`Points successfully added! New points: ${points}`);
-            // Optionally, refresh leaderboard
-            const leaderboard = document.getElementById('lederboard');
-            if (leaderboard) {
-                fetch("leaderboard.php")
-                    .then(r => r.text())
-                    .then(html => leaderboard.innerHTML = html);
-            }
+            
+            // Refresh leaderboard
+            fetch("leaderboard.php")
+                .then(r => r.text())
+                .then(html => {
+                    const leaderboard = document.getElementById('lederboard');
+                    if (leaderboard) leaderboard.innerHTML = html;
+                });
         } else {
             console.error("Failed to update points:", data.error);
         }
