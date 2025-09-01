@@ -13,9 +13,7 @@ const shipCells = [];      // spelarens skepp
 const enemyShips = [];     // fiendens skepp
 const computerMoves = [];  // datorns drag
 
-if (typeof gameOver === "undefined") {
-    let gameOver = false;
-}
+let gameOver = false;
 
 // ==================
 //  Hjälpfunktioner
