@@ -13,7 +13,7 @@
         $points = intval($data['points']);
         $user_id = $_SESSION['user_id'];
 
-        $sql = "UPDATE points SET points = points + ? WHERE ID = ?";
+        $sql = "UPDATE Highacore SET points = points + ? WHERE ID = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $points, $user_id);
 
