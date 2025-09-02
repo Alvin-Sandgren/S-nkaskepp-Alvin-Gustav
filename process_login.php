@@ -1,0 +1,72 @@
+<?php
+session_start();
+require_once 'db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    if ($username === '' || $password === '') {
+        // Login or registration failed due to missing data
+        $_SESSION['login_error'] = "Användarnamn och lösenord krävs.";
+        header('Location: index.php');
+        exit;
+    }
+
+    // Check if user exists
+    $sql = "SELECT * FROM users WHERE username = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $user = mysqli_fetch_assoc($result);
+
+    if ($user) {
+        // Existing user: check password
+        if (password_verify($password, $user['password'])) {
+            // Fetch points
+            $sql_points = "SELECT points FROM Highacore WHERE ID = ?";
+            $stmt_points = mysqli_prepare($conn, $sql_points);
+            mysqli_stmt_bind_param($stmt_points, "i", $user['ID']);
+            mysqli_stmt_execute($stmt_points);
+            $result_points = mysqli_stmt_get_result($stmt_points);
+            $points_row = mysqli_fetch_assoc($result_points);
+
+            $_SESSION['username'] = $username;
+            $_SESSION['user_id'] = $user['ID'];
+            $_SESSION['points'] = $points_row ? $points_row['points'] : 0;
+
+            header('Location: spel.php');
+            exit();
+        } else {
+            $_SESSION['login_error'] = "Fel lösenord.";
+            header('Location: index.php');
+            exit();
+        }
+    } else {
+        // New user: register
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+        $sql_insert = "INSERT INTO users (username, password) VALUES (?, ?)";
+        $stmt_insert = mysqli_prepare($conn, $sql_insert);
+        mysqli_stmt_bind_param($stmt_insert, "ss", $username, $hashed);
+        mysqli_stmt_execute($stmt_insert);
+
+        $new_user_id = mysqli_insert_id($conn);
+
+        $sql_points_insert = "INSERT INTO Highacore (ID, points) VALUES (?, 0)";
+        $stmt_points_insert = mysqli_prepare($conn, $sql_points_insert);
+        mysqli_stmt_bind_param($stmt_points_insert, "i", $new_user_id);
+        mysqli_stmt_execute($stmt_points_insert);
+
+        $_SESSION['username'] = $username;
+        $_SESSION['user_id'] = $new_user_id;
+        $_SESSION['points'] = 0;
+
+        header('Location: spel.php');
+        exit();
+    }
+} else {
+    // If not a POST request, redirect to login
+    header('Location: index.php');
+    exit();
+}
