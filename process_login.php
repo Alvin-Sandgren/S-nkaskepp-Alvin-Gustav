@@ -43,28 +43,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php');
             exit();
         }
-    } else {
-        // New user: register
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $sql_insert = "INSERT INTO users (username, password) VALUES (?, ?)";
-        $stmt_insert = mysqli_prepare($conn, $sql_insert);
-        mysqli_stmt_bind_param($stmt_insert, "ss", $username, $hashed);
-        mysqli_stmt_execute($stmt_insert);
+        } else {
+            // New user: register
+            $hashed = password_hash($password, PASSWORD_DEFAULT);
+            $sql_insert = "INSERT INTO users (username, password) VALUES (?, ?)";
+            $stmt_insert = mysqli_prepare($conn, $sql_insert);
+            mysqli_stmt_bind_param($stmt_insert, "ss", $username, $hashed);
+            mysqli_stmt_execute($stmt_insert);
 
-        $new_user_id = mysqli_insert_id($conn);
+            $new_user_id = mysqli_insert_id($conn);
 
-        $sql_points_insert = "INSERT INTO Highacore (ID, points) VALUES (?, 0)";
-        $stmt_points_insert = mysqli_prepare($conn, $sql_points_insert);
-        mysqli_stmt_bind_param($stmt_points_insert, "i", $new_user_id);
-        mysqli_stmt_execute($stmt_points_insert);
+            $sql_points_insert = "INSERT INTO Highacore (ID, points) VALUES (?, 0)";
+            $stmt_points_insert = mysqli_prepare($conn, $sql_points_insert);
+            mysqli_stmt_bind_param($stmt_points_insert, "i", $new_user_id);
+            mysqli_stmt_execute($stmt_points_insert);
 
-        $_SESSION['username'] = $username;
-        $_SESSION['user_id'] = $new_user_id;
-        $_SESSION['points'] = 0;
+            $_SESSION['username'] = $username;
+            $_SESSION['user_id'] = $new_user_id;
+            $_SESSION['points'] = 0;
 
-        header('Location: spel.php');
-        exit();
-    }
+            header('Location: spel.php');
+            exit();
+        }
 } else {
     // If not a POST request, redirect to login
     header('Location: index.php');
