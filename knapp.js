@@ -1,24 +1,19 @@
-let currentMode = "normal"; 
+let currentMode = "normal";
 
-function toggleMode(button) {
-  const modeDisplay = document.getElementById("modeDisplay");
+document.getElementById("modeBtn").addEventListener("click", function() {
+    if (currentMode === "normal") {
+        currentMode = "ryskt";
+        this.textContent = "Byt till Klassiskt Läge";
+        modeDisplay.textContent = "Ryskt Läge";
+        rysktläge();
+    } else {
+        currentMode = "normal";
+        this.textContent = "Byt till Ryskt Läge";
+        modeDisplay.textContent = "Klassiskt Läge";
+        normalmode();
+    }
+});
 
-  if (currentMode === "normal") {
-    currentMode = "ryskt";
-    button.textContent = "Byt till Klassiskt Läge";
-    modeDisplay.textContent = "Ryskt Läge";
-    rysktläge();
-  } else {
-    currentMode = "normal";
-    button.textContent = "Byt till Ryskt Läge";
-    modeDisplay.textContent = "Klassiskt Läge";
-    normalmode();
-  }
-}
-
-
-function darkmode() {
+document.getElementById("darkBtn").addEventListener("click", function() {
     document.body.classList.toggle("darkmode");
-}
-
-
+});
