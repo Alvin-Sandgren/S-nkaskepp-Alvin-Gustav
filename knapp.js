@@ -22,7 +22,4 @@ function darkmode() {
     document.body.classList.toggle("darkmode");
 }
 
-document.getElementById('resetBtn').addEventListener('click', () => {
-    if (currentMode === "ryskt") rysktläge();
-    else normalmode();
-});
+

@@ -251,7 +251,10 @@ fiendeCanvas.addEventListener('click', e => {
     }
 });
 
-document.getElementById('resetBtn').addEventListener('click', resetGame);
+document.getElementById('resetBtn').addEventListener('click', () => {
+    if (currentMode === "ryskt") rysktläge();
+    else normalmode();
+});
 
 // ===========
 //  Initiera
