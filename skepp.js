@@ -6,6 +6,8 @@ const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
 const fiendeCtx = fiendeCanvas.getContext("2d");
 
+let currentMode = "normal";
+
 const gridSize = 10, size = 400, cell = size / gridSize;
 
 const clickedCells = [];   // dina skott på fienden
