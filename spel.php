@@ -17,13 +17,14 @@ session_start();
 
 <body>
   <h1>Sänka skepp</h1>
-  <button onclick="toggleMode(this)">Klassiskt Läge</button>
+  <button onclick="toggleMode(this)">Byt till Ryskt Läge</button>
   <button id="resetBtn">Börja om</button>
   <button onclick="darkmode()">Dark Mode</button>
   <p>Spelläge: <span id="modeDisplay">Klassiskt Läge</span></p>
   <h2>Ryskt Läge innehåller fler skepp</h2>
   <p>Träff=💥</p>
   <p>Miss=❌</p>
+
 
   <section id="spelplan">
       <canvas id="minCanvas" width="400" height="400" style="border:2px solid #000;"></canvas>
