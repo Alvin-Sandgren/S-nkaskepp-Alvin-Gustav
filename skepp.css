@@ -123,16 +123,3 @@ input:hover {
   background-color: darkgoldenrod;
   color: #ffffff;
 }
-
-body.darkmode button,
-body.darkmode input {
-  background-color: #444;
-  border-color: #eee;
-  color: #eee;
-}
-
-body.darkmode button:hover,
-body.darkmode input:hover {
-  background-color: #666;
-  color: #fff;
-}
