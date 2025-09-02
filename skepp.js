@@ -6,7 +6,27 @@ const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
 const fiendeCtx = fiendeCanvas.getContext("2d");
 
-let currentMode = "normal";
+window.currentMode = "normal";
+
+window.toggleMode = function(button) {
+    const modeDisplay = document.getElementById("modeDisplay");
+
+    if (window.currentMode === "normal") {
+        window.currentMode = "ryskt";
+        button.textContent = "Byt till Klassiskt Läge";
+        modeDisplay.textContent = "Ryskt Läge";
+        rysktläge();
+    } else {
+        window.currentMode = "normal";
+        button.textContent = "Byt till Ryskt Läge";
+        modeDisplay.textContent = "Klassiskt Läge";
+        normalmode();
+    }
+}
+
+window.darkmode = function() {
+    document.body.classList.toggle("darkmode");
+}
 
 const gridSize = 10, size = 400, cell = size / gridSize;
 
