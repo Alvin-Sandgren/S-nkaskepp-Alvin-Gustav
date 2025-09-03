@@ -1,41 +1,19 @@
-// ========
-//  Setup
-// ========
+// =========
+//  Setup / Globala variabler
+// =========
 const canvas = document.getElementById("minCanvas");
 const fiendeCanvas = document.getElementById("fiendeCanvas");
 const ctx = canvas.getContext("2d");
 const fiendeCtx = fiendeCanvas.getContext("2d");
 
-window.currentMode = "normal";
-
-window.toggleMode = function(button) {
-    const modeDisplay = document.getElementById("modeDisplay");
-
-    if (window.currentMode === "normal") {
-        window.currentMode = "ryskt";
-        button.textContent = "Byt till Klassiskt Läge";
-        modeDisplay.textContent = "Ryskt Läge";
-        rysktläge();
-    } else {
-        window.currentMode = "normal";
-        button.textContent = "Byt till Ryskt Läge";
-        modeDisplay.textContent = "Klassiskt Läge";
-        normalmode();
-    }
-}
-
-window.darkmode = function() {
-    document.body.classList.toggle("darkmode");
-}
-
 const gridSize = 10, size = 400, cell = size / gridSize;
 
-const clickedCells = [];   // dina skott på fienden
-const shipCells = [];      // spelarens skepp
-const enemyShips = [];     // fiendens skepp
-const computerMoves = [];  // datorns drag
+const clickedCells = [];   // Dina skott på fienden
+const shipCells = [];      // Spelarens skepp
+const enemyShips = [];     // Fiendens skepp
+const computerMoves = [];  // Datorns drag
 
-// Global gameOver variable
+window.currentMode = "normal";
 window.gameOver = window.gameOver || false;
 
 // ==================
@@ -52,25 +30,15 @@ function getCell(e) {
 
 function generateFleet(targetArray, totalCells, forbidden = []) {
     targetArray.length = 0;
-
     while (targetArray.length < totalCells) {
         const length = Math.floor(Math.random() * 4) + 1;
         const horizontal = Math.random() < 0.5;
-        let startCol, startRow;
-
-        if (horizontal) {
-            startCol = Math.floor(Math.random() * (gridSize - length + 1));
-            startRow = Math.floor(Math.random() * gridSize);
-        } else {
-            startCol = Math.floor(Math.random() * gridSize);
-            startRow = Math.floor(Math.random() * (gridSize - length + 1));
-        }
+        const startCol = horizontal ? Math.floor(Math.random() * (gridSize - length + 1)) : Math.floor(Math.random() * gridSize);
+        const startRow = horizontal ? Math.floor(Math.random() * gridSize) : Math.floor(Math.random() * (gridSize - length + 1));
 
         const newShip = [];
         for (let i = 0; i < length; i++) {
-            const c = horizontal ? startCol + i : startCol;
-            const r = horizontal ? startRow : startRow + i;
-            newShip.push([c, r]);
+            newShip.push(horizontal ? [startCol + i, startRow] : [startCol, startRow + i]);
         }
 
         if (!newShip.some(pos =>
@@ -80,6 +48,14 @@ function generateFleet(targetArray, totalCells, forbidden = []) {
             targetArray.push(...newShip);
         }
     }
+}
+
+function getRandomEmptyCell() {
+    let cell;
+    do {
+        cell = [Math.floor(Math.random() * gridSize), Math.floor(Math.random() * gridSize)];
+    } while (computerMoves.some(([c, r]) => c === cell[0] && r === cell[1]));
+    return cell;
 }
 
 // =======================
@@ -92,12 +68,14 @@ function drawGrid(ctx) {
         ctx.moveTo(i * cell, 0); ctx.lineTo(i * cell, size);
         ctx.moveTo(0, i * cell); ctx.lineTo(size, i * cell);
     }
-    ctx.strokeStyle = "black"; ctx.stroke();
+    ctx.strokeStyle = "black";
+    ctx.stroke();
 }
 
 function drawAllX(ctx, cells, ships) {
     ctx.save();
-    ctx.strokeStyle = "black"; ctx.lineWidth = 3;
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 3;
     const pad = cell * 0.2;
 
     cells.forEach(([c, r]) => {
@@ -159,18 +137,13 @@ function checkGameOver() {
     );
 
     if (playerLost || enemyLost) {
-        if (!window.gameOver) { // only run once
+        if (!window.gameOver) {
             window.gameOver = true;
 
             setTimeout(() => {
-                if (enemyLost && playerLost) {
-                    alert("Oavgjort! 😲");
-                } else if (enemyLost) {
-                    alert("DU VANN! 🚢💥");
-                    updateLeaderboard(1); // only add points if player won
-                } else {
-                    alert("Du förlorade... dålig 😢");
-                }
+                if (enemyLost && playerLost) alert("Oavgjort! 😲");
+                else if (enemyLost) { alert("DU VANN! 🚢💥"); updateLeaderboard(1); }
+                else alert("Du förlorade... dålig 😢");
             }, 100);
         }
     }
@@ -180,25 +153,22 @@ function updateLeaderboard(points) {
     fetch("leaderboard.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ points: points })
+        body: JSON.stringify({ points })
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
             console.log(`Points successfully added! New points: ${points}`);
-            
-            // Refresh leaderboard
             fetch("leaderboard.php")
                 .then(r => r.text())
                 .then(html => {
                     const leaderboard = document.getElementById('lederboard');
                     if (leaderboard) leaderboard.innerHTML = html;
                 });
-        } else {
-            console.error("Failed to update points:", data.error);
-        }
-    })
+        } else console.error("Failed to update points:", data.error);
+    });
 }
+
 // ===============================
 //  Spellogik
 // ===============================
@@ -215,26 +185,35 @@ function resetGame(fleetSize = 12) {
     redrawPlayerCanvas();
 }
 
-function normalmode() {
-    resetGame(11);  
-}
+function normalmode() { resetGame(11); }
+function rysktläge() { resetGame(15); }
 
-function rysktläge() {
-    resetGame(15);  
-}
+window.toggleMode = function(button) {
+    const modeDisplay = document.getElementById("modeDisplay");
 
-function gamemode() {
-    const element = document.body;
-    element.classList.toggle("gamemode");
-    if (element.classList.contains("gamemode")) {
+    if (window.currentMode === "normal") {
+        window.currentMode = "ryskt";
+        button.textContent = "Byt till Klassiskt Läge";
+        modeDisplay.textContent = "Ryskt Läge";
         rysktläge();
     } else {
+        window.currentMode = "normal";
+        button.textContent = "Byt till Ryskt Läge";
+        modeDisplay.textContent = "Klassiskt Läge";
         normalmode();
     }
 }
 
+window.darkmode = () => document.body.classList.toggle("darkmode");
+
+function gamemode() {
+    const element = document.body;
+    element.classList.toggle("gamemode");
+    element.classList.contains("gamemode") ? rysktläge() : normalmode();
+}
+
 // ==========================================================
-//  Funktioner som lyssnar på actions aka mouse track på grid
+//  Event listeners
 // ==========================================================
 
 fiendeCanvas.addEventListener('mousemove', e => !window.gameOver && redrawFiendeCanvas(getCell(e)));
@@ -244,7 +223,6 @@ fiendeCanvas.addEventListener('click', e => {
     if (window.gameOver) return;
 
     const cellPos = getCell(e);
-
     if (clickedCells.some(([c, r]) => c === cellPos[0] && r === cellPos[1])) return;
 
     clickedCells.push(cellPos);
@@ -256,17 +234,9 @@ fiendeCanvas.addEventListener('click', e => {
     if (!hit && !window.gameOver) {
         let enemyHit;
         do {
-            let randCell;
-            do {
-                randCell = [
-                    Math.floor(Math.random() * gridSize),
-                    Math.floor(Math.random() * gridSize)
-                ];
-            } while (computerMoves.some(([c, r]) => c === randCell[0] && r === randCell[1]));
-
+            const randCell = getRandomEmptyCell();
             computerMoves.push(randCell);
             redrawPlayerCanvas();
-
             enemyHit = shipCells.some(([c, r]) => c === randCell[0] && r === randCell[1]);
             checkGameOver();
         } while (enemyHit && !window.gameOver);
@@ -274,8 +244,7 @@ fiendeCanvas.addEventListener('click', e => {
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {
-    if (currentMode === "ryskt") rysktläge();
-    else normalmode();
+    currentMode === "ryskt" ? rysktläge() : normalmode();
 });
 
 // ===========
