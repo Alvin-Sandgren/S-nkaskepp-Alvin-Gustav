@@ -1,25 +1,27 @@
 // =========
 //  Setup / Globala variabler
 // =========
-const canvas = document.getElementById("minCanvas");
-const fiendeCanvas = document.getElementById("fiendeCanvas");
+const canvas = document.getElementById("minCanvas");   // spelarens canvas
+const fiendeCanvas = document.getElementById("fiendeCanvas"); // fiendens canvas
 const ctx = canvas.getContext("2d");
 const fiendeCtx = fiendeCanvas.getContext("2d");
 
-const gridSize = 10, size = 400, cell = size / gridSize;
+const gridSize = 10, size = 400, cell = size / gridSize; // gridstorlek
 
-const clickedCells = [];   // Dina skott på fienden
-const shipCells = [];      // Spelarens skepp
-const enemyShips = [];     // Fiendens skepp
-const computerMoves = [];  // Datorns drag
+// Arrays som håller celler för spel och drag
+const clickedCells = [];   // spelarens skott på fienden
+const shipCells = [];      // spelarens skepp
+const enemyShips = [];     // fiendens skepp
+const computerMoves = [];  // datorns drag
 
-window.currentMode = "normal";
-window.gameOver = window.gameOver || false;
+window.currentMode = "normal"; // startläge
+window.gameOver = window.gameOver || false; // global game over-flagga
 
 // ==================
 //  Hjälpfunktioner
 // ==================
 
+// Returnerar cellen som musen pekar på
 function getCell(e) {
     const rect = fiendeCanvas.getBoundingClientRect();
     return [
@@ -28,6 +30,7 @@ function getCell(e) {
     ];
 }
 
+// Skapar ett skeppsfält utan att överlappa andra skepp eller förbjudna celler
 function generateFleet(targetArray, totalCells, forbidden = []) {
     targetArray.length = 0;
     while (targetArray.length < totalCells) {
@@ -35,12 +38,11 @@ function generateFleet(targetArray, totalCells, forbidden = []) {
         const horizontal = Math.random() < 0.5;
         const startCol = horizontal ? Math.floor(Math.random() * (gridSize - length + 1)) : Math.floor(Math.random() * gridSize);
         const startRow = horizontal ? Math.floor(Math.random() * gridSize) : Math.floor(Math.random() * (gridSize - length + 1));
-
         const newShip = [];
         for (let i = 0; i < length; i++) {
             newShip.push(horizontal ? [startCol + i, startRow] : [startCol, startRow + i]);
         }
-
+        // Kontrollera att skeppet inte överlappar
         if (!newShip.some(pos =>
             targetArray.some(([c, r]) => c === pos[0] && r === pos[1]) ||
             forbidden.some(([c, r]) => c === pos[0] && r === pos[1])
@@ -50,6 +52,7 @@ function generateFleet(targetArray, totalCells, forbidden = []) {
     }
 }
 
+// Returnerar en slumpmässig cell som datorn inte redan har valt
 function getRandomEmptyCell() {
     let cell;
     do {
@@ -62,6 +65,7 @@ function getRandomEmptyCell() {
 //  Renderingsfunktioner
 // =======================
 
+// Ritar rutnätet
 function drawGrid(ctx) {
     ctx.beginPath();
     for (let i = 0; i <= gridSize; i++) {
@@ -72,6 +76,7 @@ function drawGrid(ctx) {
     ctx.stroke();
 }
 
+// Ritar kors för miss och explosion för träff
 function drawAllX(ctx, cells, ships) {
     ctx.save();
     ctx.strokeStyle = "black";
@@ -80,12 +85,14 @@ function drawAllX(ctx, cells, ships) {
 
     cells.forEach(([c, r]) => {
         if (ships.some(([sc, sr]) => sc === c && sr === r)) {
+            // träff
             ctx.font = `${cell * 0.8}px serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillStyle = "red"; 
             ctx.fillText("💥", c * cell + cell / 2, r * cell + cell / 2);
         } else {
+            // miss
             ctx.beginPath();
             ctx.moveTo(c * cell + pad, r * cell + pad);
             ctx.lineTo((c + 1) * cell - pad, (r + 1) * cell - pad);
@@ -97,6 +104,7 @@ function drawAllX(ctx, cells, ships) {
     ctx.restore();
 }
 
+// Ritar fiendens canvas och hover-effekt
 function redrawFiendeCanvas(hover) {
     fiendeCtx.clearRect(0, 0, size, size);
     drawGrid(fiendeCtx);
@@ -108,6 +116,7 @@ function redrawFiendeCanvas(hover) {
     }
 }
 
+// Ritar spelarens canvas med skepp och datorns drag
 function redrawPlayerCanvas() {
     ctx.clearRect(0, 0, size, size);
     drawGrid(ctx);
@@ -125,9 +134,10 @@ function redrawPlayerCanvas() {
 }
 
 // ===================================================
-//  Game Over / Vinst meddelanden / Leaderboard update
+//  Game Over & Leaderboard
 // ===================================================
 
+// Kontrollerar om spelet är slut
 function checkGameOver() {
     const playerLost = shipCells.every(([c, r]) =>
         computerMoves.some(([cc, rr]) => cc === c && rr === r)
@@ -149,6 +159,7 @@ function checkGameOver() {
     }
 }
 
+// Uppdaterar leaderboard med poäng
 function updateLeaderboard(points) {
     fetch("leaderboard.php", {
         method: "POST",
@@ -173,21 +184,24 @@ function updateLeaderboard(points) {
 //  Spellogik
 // ===============================
 
+// Återställer spelet
 function resetGame(fleetSize = 12) {  
-    clickedCells.length = 0;
-    computerMoves.length = 0;
-    window.gameOver = false;
+    clickedCells.length = 0;       // rensa spelarens drag
+    computerMoves.length = 0;      // rensa datorns drag
+    window.gameOver = false;       // återställ game over
 
-    generateFleet(shipCells, fleetSize);
-    generateFleet(enemyShips, fleetSize, shipCells);
+    generateFleet(shipCells, fleetSize);           // skapa spelarens skepp
+    generateFleet(enemyShips, fleetSize, shipCells); // skapa fiendens skepp
 
-    redrawFiendeCanvas();
-    redrawPlayerCanvas();
+    redrawFiendeCanvas(); // rita fiendens canvas
+    redrawPlayerCanvas(); // rita spelarens canvas
 }
 
+// Startlägen
 function normalmode() { resetGame(11); }
 function rysktläge() { resetGame(15); }
 
+// Byter mellan normal och ryskt läge
 window.toggleMode = function(button) {
     const modeDisplay = document.getElementById("modeDisplay");
 
@@ -204,8 +218,10 @@ window.toggleMode = function(button) {
     }
 }
 
+// Byter mellan ljust och mörkt läge
 window.darkmode = () => document.body.classList.toggle("darkmode");
 
+// Aktiverar gamemode (ryskt läge)
 function gamemode() {
     const element = document.body;
     element.classList.toggle("gamemode");
@@ -216,9 +232,11 @@ function gamemode() {
 //  Event listeners
 // ==========================================================
 
+// Hover-effekt på fiendens canvas
 fiendeCanvas.addEventListener('mousemove', e => !window.gameOver && redrawFiendeCanvas(getCell(e)));
 fiendeCanvas.addEventListener('mouseleave', () => redrawFiendeCanvas());
 
+// Hanterar klick på fiendens canvas (spelarens drag)
 fiendeCanvas.addEventListener('click', e => {
     if (window.gameOver) return;
 
@@ -243,6 +261,7 @@ fiendeCanvas.addEventListener('click', e => {
     }
 });
 
+// Reset-knapp
 document.getElementById('resetBtn').addEventListener('click', () => {
     currentMode === "ryskt" ? rysktläge() : normalmode();
 });
