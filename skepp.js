@@ -129,13 +129,12 @@ function redrawPlayerCanvas() {
         ctx.fill();
         ctx.restore();
     });
-
     drawAllX(ctx, computerMoves, shipCells);
 }
 
-// ===================================================
+// =========================
 //  Game Over & Leaderboard
-// ===================================================
+// =========================
 
 // Kontrollerar om spelet är slut
 function checkGameOver() {
@@ -180,9 +179,9 @@ function updateLeaderboard(points) {
     });
 }
 
-// ===============================
+// ===========
 //  Spellogik
-// ===============================
+// ===========
 
 // Återställer spelet
 function resetGame(fleetSize = 12) {  
@@ -218,7 +217,7 @@ window.toggleMode = function(button) {
     }
 }
 
-// Byter mellan ljust och mörkt läge
+// Byter mellan light och darkmode
 window.darkmode = () => document.body.classList.toggle("darkmode");
 
 // Aktiverar gamemode (ryskt läge)
@@ -227,10 +226,9 @@ function gamemode() {
     element.classList.toggle("gamemode");
     element.classList.contains("gamemode") ? rysktläge() : normalmode();
 }
-
-// ==========================================================
+// =================
 //  Event listeners
-// ==========================================================
+// =================
 
 // Hover-effekt på fiendens canvas
 fiendeCanvas.addEventListener('mousemove', e => !window.gameOver && redrawFiendeCanvas(getCell(e)));
