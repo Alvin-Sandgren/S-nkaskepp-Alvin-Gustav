@@ -12,7 +12,7 @@
 </head>
 <body>
     <br>
-    <h1>Logga in för sänka skäpp</h1>
+    <h1>Logga in för sänka skepp</h1>
     <p>Om du inte har ett konto så gör du ett nytt igenom att fylla i fälten nedan.</p> <br><br>
     <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
     <form method="POST" action="process_login.php">
