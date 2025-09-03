@@ -1,3 +1,4 @@
+//? Anslutning till databasen, sätter charset för att hantera åäö på rätt sätt
 <?php
 $host = "websrv2-age.ntigskovde.se";
 $dbname = "ntigskov_websrv2-age";

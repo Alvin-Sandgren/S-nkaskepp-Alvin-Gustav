@@ -1,3 +1,4 @@
+//? Gör så att du inte kan komma åt spel.php utan att vara inloggad
 <?php
 session_start();
 

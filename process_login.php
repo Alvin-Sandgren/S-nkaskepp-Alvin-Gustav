@@ -1,9 +1,10 @@
+//? Denna fil hanterar inloggning samt skapning a konton. Gör detta i samma fil istället för att ha 2 separata sidor.
 <?php
 session_start();
 require_once 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
+    $username = trim($_POST['username'] ?? ''); // Trim tar bort whitespace aka " user " blir till "user"
     $password = trim($_POST['password'] ?? '');
 
     if ($username === '' || $password === '') {
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = mysqli_fetch_assoc($result);
 
     if ($user) {
-        // Existing user: check password (plain text compare)
+        // Kontot finns redan, kollar lösenordet
         if ($password === $user['password']) {
             // Fetch points
             $sql_points = "SELECT points FROM Highacore WHERE ID = ?";
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 } else {
-    // If not a POST request, redirect to login
+    // Inte POST req = Tillbaks med dig
     header('Location: index.php');
     exit();
 }
