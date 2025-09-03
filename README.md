@@ -12,3 +12,5 @@ Gustav Fixade mycket till ledar brädan, funktion och det men inget inlogg ännu
 08/28 idag har Erik fixat så att 💥 emojin är lika tydliga på båda planerna och fixat med inlogg och små fixad med skepp
 
 09/01 Gustav har slitit ut håret då han har försökt fixa leaderboard, han(jag) löste det men man kan inte logga in, men du kan göra ett nytt konto. Om du ska logga in med ett befintligt konto och fyller i allt rätt så blir det fof fel lösenord. AKA morgondagens problem.(Kim får en shout out pga av alla hjälp, han skulle valt detta ämne istället för japanska 2!!!)
+
+09/02 igår efter Gustav tagit bort script länk till knapp.js så inga knappar funkar. Alvin kom till undsättning och fixade problem för han är PRO
