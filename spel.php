@@ -1,4 +1,5 @@
 <?php
+//? Spel sida, startar session. aaaa html
 session_start();
 ?>
 <!DOCTYPE html>
